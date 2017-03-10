@@ -1,0 +1,21 @@
+[package]
+name = "xkpwgen"
+version = "0.1.0-pre"
+description = "Generate XKCD 936 passwords"
+readme = "README.md"
+homepage = "https://xkcd.com/936/"
+repository = "https://github.com/lunaryorn/xkpwgen"
+license = "GPL-3"
+authors = ["Sebastian Wiesner <swiesner@lunaryorn.com>"]
+build = "build.rs"
+
+[dependencies]
+
+[build-dependencies]
+sha2 = "*"
+reqwest = "*"
+
+
+[[bin]]
+doc = false
+name = "xkpwgen"
