@@ -35,7 +35,10 @@ fn main() {
 
     let client = reqwest::Client::new().unwrap();
 
-    let mut response = client.get(URL).header(reqwest::header::Connection::close()).send().unwrap();
+    let mut response = client.get(URL)
+        .header(reqwest::header::Connection::close())
+        .send()
+        .unwrap();
     let mut wordlist_buffer = Vec::with_capacity(40000);
     response.read_to_end(&mut wordlist_buffer).unwrap();
 

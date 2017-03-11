@@ -25,5 +25,6 @@ fn parse_diceware_list(input: &str) -> Vec<&str> {
 
 fn main() {
     let words = parse_diceware_list(EFF_WORDLIST);
-    println!("{}", rand::sample(&mut rand::thread_rng(), words, 4).join(" "));
+    println!("{}",
+             rand::sample(&mut rand::thread_rng(), words, 4).join(" "));
 }
