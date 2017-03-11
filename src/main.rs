@@ -21,7 +21,7 @@
 extern crate clap;
 extern crate rand;
 
-use clap::{App, Arg};
+use clap::{App};
 
 static EFF_WORDLIST: &'static str = include_str!(concat!(env!("OUT_DIR"), "/eff_wordlist.txt"));
 
@@ -30,7 +30,7 @@ fn parse_diceware_list(input: &str) -> Vec<&str> {
 }
 
 fn main() {
-    let matches = App::new("xkpwgen")
+    App::new("xkpwgen")
         .version(&crate_version!())
         .about("Generate XKCD 936 passwords")
         .after_help("Copyright (C) 2017 Sebastian Wiesner <swiesner@lunaryorn.com>
