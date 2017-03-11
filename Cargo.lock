@@ -2,6 +2,7 @@
 name = "xkpwgen"
 version = "0.1.0-pre"
 dependencies = [
+ "rand 0.3.15 (registry+https://github.com/rust-lang/crates.io-index)",
  "reqwest 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "sha2 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
 ]

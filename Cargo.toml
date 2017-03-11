@@ -15,6 +15,7 @@ build = "build.rs"
 travis-ci = { repository = "https://github.com/lunaryorn/xkpwgen.rs" }
 
 [dependencies]
+rand = "^0.3"
 
 [build-dependencies]
 sha2 = "^0.4"
