@@ -15,7 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#[macro_use]
+extern crate clap;
 extern crate rand;
+
+use clap::{App, Arg};
 
 static EFF_WORDLIST: &'static str = include_str!(concat!(env!("OUT_DIR"), "/eff_wordlist.txt"));
 
@@ -24,6 +28,15 @@ fn parse_diceware_list(input: &str) -> Vec<&str> {
 }
 
 fn main() {
+    let matches = App::new("xkpwgen")
+        .version(&crate_version!())
+        .about("Generate XKCD 936 passwords")
+        .after_help("Copyright (C) 2017 Sebastian Wiesner <swiesner@lunaryorn.com>
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.")
+        .get_matches();
+
     let words = parse_diceware_list(EFF_WORDLIST);
     println!("{}",
              rand::sample(&mut rand::thread_rng(), words, 4).join(" "));
