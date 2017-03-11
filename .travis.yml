@@ -2,7 +2,14 @@ sudo: false
 language: rust
 rust:
   - nightly
+before_install:
+  # Check formatting
+  - cargo install rustfmt
 script:
+  # Check build script formatting separately because cargo fmt doesn't pick it up
+  - rustfmt --write-mode=diff build.rs
+  # Check formatting of sources
+  - cargo fmt -- --write-mode=diff
   - cargo build --verbose
   - cargo test --verbose
   - cargo bench --verbose
