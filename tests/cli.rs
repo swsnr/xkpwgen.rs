@@ -59,48 +59,64 @@ stderr:
     result
 }
 
-fn parse_phrases<'a>(s: &'a str, sep: &str) -> Vec<Vec<&'a str>> {
+fn phrases<'a>(s: &'a str, sep: &str) -> Vec<Vec<&'a str>> {
     s.lines().map(|w| w.split(sep).collect()).collect()
+}
+
+fn words<'a>(s: &'a str, sep: &str) -> Vec<&'a str> {
+    s.lines().flat_map(|w| w.split(sep)).collect()
+}
+
+macro_rules! repeat_run {
+    ($result:ident, $command:expr, $body:block) => {
+        {
+            for _ in 0..10 {
+                let $result = assert_run($command);
+                $body;
+            }
+        }
+    };
+
+    ($result:ident, $body:block) => {
+        {
+        let command: Vec<String> = Vec::new();
+        repeat_run!($result, &command, $body);
+        }
+    };
 }
 
 #[test]
 fn it_prints_a_single_phrase_by_default() {
-    let result = assert_run::<String>(&[]);
-    let phrases = parse_phrases(&result.stdout, " ");
-    assert!(phrases.len() == 1,
-            "Expected one phrase, got {}",
-            phrases.len());
+    repeat_run!(result, {
+        assert_eq!(phrases(&result.stdout, " ").len(), 1);
+    })
 }
 
 #[test]
 fn it_prints_four_words_per_phrase_by_default() {
-    for _ in 0..10 {
-        let result = assert_run::<String>(&[]);
-        let phrases = parse_phrases(&result.stdout, " ");
-        for words in phrases {
-            assert!(words.len() == 4, "Expected 4 words, got {}", words.len());
+    repeat_run!(result, {
+        for words in phrases(&result.stdout, " ") {
+            assert_eq!(words.len(), 4);
         }
-    }
+    })
 }
 
 #[test]
 fn it_prints_no_words_with_whitespace() {
-    for _ in 0..10 {
-        let result = assert_run::<String>(&[]);
-        for word in parse_phrases(&result.stdout, " ").iter().flat_map(|ws| ws.iter()) {
+    repeat_run!(result, {
+        for word in words(&result.stdout, " ") {
             assert!(!word.contains(|c: char| c.is_whitespace()),
                     "Word {} contained whitespace!",
                     word);
         }
-    }
+    })
 }
 
 #[test]
 fn it_prints_no_empty_words() {
-    for _ in 0..10 {
-        let result = assert_run::<String>(&[]);
-        for word in parse_phrases(&result.stdout, " ").iter().flat_map(|ws| ws.iter()) {
+    repeat_run!(result, {
+        for word in words(&result.stdout, " ") {
             assert!(word.len() > 0, "Got empty word");
         }
-    }
+    })
 }
