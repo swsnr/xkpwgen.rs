@@ -8,10 +8,10 @@ matrix:
   allow_failures:
     - rust: nightly
 before_install:
-  # Setup Cargo path to make rustfmt available
-  - source ~/.cargo/env
   # Check formatting
   - cargo install rustfmt
+  # Setup Cargo path to make rustfmt available
+  - source ~/.cargo/env
 script:
   # Check build script formatting separately because cargo fmt doesn't pick it up
   - rustfmt --write-mode=diff build.rs
