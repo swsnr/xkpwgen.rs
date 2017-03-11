@@ -11,7 +11,7 @@ before_install:
   # Add Rust binaries to path
   - export PATH="$HOME/.cargo/bin:$PATH"
   # Check formatting
-  - cargo install rustfmt
+  - cargo install rustfmt || true
 script:
   # Check build script formatting separately because cargo fmt doesn't pick it up
   - rustfmt --write-mode=diff build.rs
