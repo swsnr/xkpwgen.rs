@@ -19,13 +19,15 @@ extern crate reqwest;
 extern crate sha2;
 
 use sha2::{Sha256, Digest};
-use std::io::prelude::*;
 use std::env;
-use std::path::Path;
 use std::fs::File;
+use std::io::prelude::*;
+use std::path::Path;
 
 static URL: &'static str = "https://www.eff.org/files/2016/07/18/eff_large_wordlist.txt";
-static WORDLIST_SHA256: &'static str = "addd35536511597a02fa0a9ff1e5284677b8883b83e986e43f15a3db996b903e";
+static WORDLIST_SHA256: &'static str = {
+    "addd35536511597a02fa0a9ff1e5284677b8883b83e986e43f15a3db996b903e"
+};
 
 fn main() {
     let out_dir = env::var("OUT_DIR").unwrap();
@@ -41,7 +43,8 @@ fn main() {
     hasher.input(&wordlist_buffer);
     let hash = hasher.result().map(|b| format!("{:02x}", b)).join("");
     if hash != WORDLIST_SHA256 {
-        panic!("SHA256 mismatch for EFF wordlist! Report issue to https://github.com/lunaryorn/xkpwgen.rs");
+        panic!("SHA256 mismatch for EFF wordlist! Report issue to \
+                https://github.com/lunaryorn/xkpwgen.rs");
     }
 
     File::create(&eff_wordlist).unwrap().write_all(&wordlist_buffer).unwrap();
