@@ -15,6 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+extern crate rand;
+
+static EFF_WORDLIST: &'static str = include_str!(concat!(env!("OUT_DIR"), "/eff_wordlist.txt"));
+
+fn parse_diceware_list(input: &str) -> Vec<&str> {
+    input.lines().map(|l| l.split_whitespace().last().unwrap()).collect()
+}
+
 fn main() {
-    println!("hello world")
+    let words = parse_diceware_list(EFF_WORDLIST);
+    println!("{}", rand::sample(&mut rand::thread_rng(), words, 4).join(" "));
 }
