@@ -42,11 +42,21 @@ There is NO WARRANTY, to the extent permitted by law.")
                  .long("number")
                  .default_value("5")
                  .help("The number of passwords to generate at once"))
+        .arg(Arg::with_name("length")
+                 .short("l")
+                 .long("length")
+                 .default_value("4")
+                 .help("The number of words in each password"))
         .get_matches();
 
     let words = parse_diceware_list(EFF_WORDLIST);
-    for _ in 0..value_t_or_exit!(matches.value_of("number"), usize) {
+    let password_length = value_t_or_exit!(matches.value_of("length"), usize);
+    let number_of_passwords = value_t_or_exit!(matches.value_of("number"), usize);
+    for _ in 0..number_of_passwords {
         println!("{}",
-                 rand::sample(&mut rand::thread_rng(), words.iter().map(|s| *s), 4).join(" "));
+                 rand::sample(&mut rand::thread_rng(),
+                              words.iter().map(|s| *s),
+                              password_length)
+                         .join(" "));
     }
 }

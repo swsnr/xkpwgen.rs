@@ -106,19 +106,28 @@ fn it_prints_five_phrases_by_default() {
 }
 
 #[test]
-fn it_prints_the_given_number_of_phrases() {
+fn it_prints_the_given_number_of_passwords() {
     repeat_run!(result, &["-n", "10"], {
         assert_eq!(result.stdout.lines().count(), 10);
     })
 }
 
 #[test]
-fn it_prints_four_words_per_phrase_by_default() {
+fn it_prints_four_words_per_password_by_default() {
     repeat_run!(result, {
         for password in result.stdout.lines() {
             assert_eq!(all_words(password, " ").len(), 4);
         }
     })
+}
+
+#[test]
+fn it_prints_the_given_number_of_words_per_password() {
+    repeat_run!(result, &["-l", "9"], {
+        for password in result.stdout.lines() {
+            assert_eq!(all_words(password, " ").len(), 9)
+        }
+    });
 }
 
 #[test]
