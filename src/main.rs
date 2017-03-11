@@ -21,7 +21,7 @@
 extern crate clap;
 extern crate rand;
 
-use clap::{App};
+use clap::App;
 
 static EFF_WORDLIST: &'static str = include_str!(concat!(env!("OUT_DIR"), "/eff_wordlist.txt"));
 
