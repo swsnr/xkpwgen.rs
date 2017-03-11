@@ -1,4 +1,4 @@
-# XKpwgen [![Travis branch][travis-badge]][travis] [![Apache 2.0 license][license-badge]][license]
+# XKpwgen [![Travis branch][travis-badge]][travis]
 
 Generate [XKCD 936](https://xkcd.com/936/) passwords:
 
@@ -31,5 +31,3 @@ specific language governing permissions and limitations under the License.
 
 [travis-badge]: https://img.shields.io/travis/lunaryorn/xkpwgen.rs/master.svg?maxAge=2592000
 [travis]: https://travis-ci.org/lunaryorn/xkpwgen.rs
-[license-badge]: https://img.shields.io/github/license/lunaryorn/xkpwgen.rs.svg?maxAge=2592000
-[license]: https://github.com/lunaryorn/xkpwgen.rs/blob/master/LICENSE
