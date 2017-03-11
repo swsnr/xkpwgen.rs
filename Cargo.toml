@@ -3,11 +3,16 @@ name = "xkpwgen"
 version = "0.1.0-pre"
 description = "Generate XKCD 936 passwords"
 readme = "README.md"
-homepage = "https://xkcd.com/936/"
-repository = "https://github.com/lunaryorn/xkpwgen"
+homepage = "https://github.com/lunaryorn/xkpwgen.rs"
+repository = "https://github.com/lunaryorn/xkpwgen.rs"
+keywords = ["xkcd", "936", "password", "correct", "horse", "battery", "staple"]
+categories = ["command-line-utilities", "text-processing"]
 license = "GPL-3"
 authors = ["Sebastian Wiesner <swiesner@lunaryorn.com>"]
 build = "build.rs"
+
+[badges]
+travis-ci = { repository = "https://github.com/lunaryorn/xkpwgen.rs" }
 
 [dependencies]
 
