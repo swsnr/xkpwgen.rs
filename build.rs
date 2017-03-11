@@ -15,17 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-extern crate sha2;
 extern crate reqwest;
+extern crate sha2;
 
-use std::io;
+use sha2::{Sha256, Digest};
 use std::io::prelude::*;
 use std::env;
 use std::path::Path;
 use std::fs::File;
 
 static URL: &'static str = "https://www.eff.org/files/2016/07/18/eff_large_wordlist.txt";
-static URL_HASH_SHA256: &'static str = "addd35536511597a02fa0a9ff1e5284677b8883b83e986e43f15a3db996b903e";
+static WORDLIST_SHA256: &'static str = "addd35536511597a02fa0a9ff1e5284677b8883b83e986e43f15a3db996b903e";
 
 fn main() {
     let out_dir = env::var("OUT_DIR").unwrap();
@@ -33,9 +33,17 @@ fn main() {
 
     let client = reqwest::Client::new().unwrap();
 
-    println!("Downloading EFF wordlist to {}", eff_wordlist.to_string_lossy());
-    let mut sink = File::create(&eff_wordlist).unwrap();
-    let mut source = client.get(URL).header(reqwest::header::Connection::close()).send().unwrap();
-    io::copy(&mut source, &mut sink).unwrap();
-    println!("Got EFF wordlist");
+    let mut response = client.get(URL).header(reqwest::header::Connection::close()).send().unwrap();
+    let mut wordlist_buffer = Vec::with_capacity(40000);
+    response.read_to_end(&mut wordlist_buffer).unwrap();
+
+    let mut hasher = Sha256::new();
+    hasher.input(&wordlist_buffer);
+    let hash = hasher.result().map(|b| format!("{:02x}", b)).join("");
+    if hash != WORDLIST_SHA256 {
+        panic!("SHA256 mismatch for EFF wordlist! Report issue to https://github.com/lunaryorn/xkpwgen.rs");
+    }
+
+    File::create(&eff_wordlist).unwrap().write_all(&wordlist_buffer).unwrap();
+    println!("Wrote EFF wordlist to {}", eff_wordlist.to_string_lossy());
 }

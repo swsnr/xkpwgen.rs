@@ -12,9 +12,8 @@ build = "build.rs"
 [dependencies]
 
 [build-dependencies]
-sha2 = "*"
-reqwest = "*"
-
+sha2 = "^0.4"
+reqwest = "^0.4"
 
 [[bin]]
 doc = false
