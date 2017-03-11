@@ -1,7 +1,12 @@
 sudo: false
 language: rust
 rust:
+  - stable
+  - beta
   - nightly
+matrix:
+  allow_failures:
+    - rust: nightly
 before_install:
   # Check formatting
   - cargo install rustfmt
