@@ -21,7 +21,7 @@
 extern crate clap;
 extern crate rand;
 
-use clap::App;
+use clap::{App, Arg};
 
 static EFF_WORDLIST: &'static str = include_str!(concat!(env!("OUT_DIR"), "/eff_wordlist.txt"));
 
@@ -30,16 +30,23 @@ fn parse_diceware_list(input: &str) -> Vec<&str> {
 }
 
 fn main() {
-    App::new("xkpwgen")
-        .version(&crate_version!())
+    let matches = App::new("xkpwgen")
+        .version(crate_version!())
         .about("Generate XKCD 936 passwords")
         .after_help("Copyright (C) 2017 Sebastian Wiesner <swiesner@lunaryorn.com>
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.")
+        .arg(Arg::with_name("number")
+                 .short("n")
+                 .long("number")
+                 .default_value("5")
+                 .help("The number of passwords to generate at once"))
         .get_matches();
 
     let words = parse_diceware_list(EFF_WORDLIST);
-    println!("{}",
-             rand::sample(&mut rand::thread_rng(), words, 4).join(" "));
+    for _ in 0..value_t_or_exit!(matches.value_of("number"), usize) {
+        println!("{}",
+                 rand::sample(&mut rand::thread_rng(), words.iter().map(|s| *s), 4).join(" "));
+    }
 }

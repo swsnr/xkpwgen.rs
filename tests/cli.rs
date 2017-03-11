@@ -59,11 +59,7 @@ stderr:
     result
 }
 
-fn phrases<'a>(s: &'a str, sep: &str) -> Vec<Vec<&'a str>> {
-    s.lines().map(|w| w.split(sep).collect()).collect()
-}
-
-fn words<'a>(s: &'a str, sep: &str) -> Vec<&'a str> {
+fn all_words<'a>(s: &'a str, sep: &str) -> Vec<&'a str> {
     s.lines().flat_map(|w| w.split(sep)).collect()
 }
 
@@ -103,17 +99,24 @@ fn it_includes_license_and_warranty_in_help() {
 }
 
 #[test]
-fn it_prints_a_single_phrase_by_default() {
+fn it_prints_five_phrases_by_default() {
     repeat_run!(result, {
-        assert_eq!(phrases(&result.stdout, " ").len(), 1);
+        assert_eq!(result.stdout.lines().count(), 5);
+    })
+}
+
+#[test]
+fn it_prints_the_given_number_of_phrases() {
+    repeat_run!(result, &["-n", "10"], {
+        assert_eq!(result.stdout.lines().count(), 10);
     })
 }
 
 #[test]
 fn it_prints_four_words_per_phrase_by_default() {
     repeat_run!(result, {
-        for words in phrases(&result.stdout, " ") {
-            assert_eq!(words.len(), 4);
+        for password in result.stdout.lines() {
+            assert_eq!(all_words(password, " ").len(), 4);
         }
     })
 }
@@ -121,7 +124,7 @@ fn it_prints_four_words_per_phrase_by_default() {
 #[test]
 fn it_prints_no_words_with_whitespace() {
     repeat_run!(result, {
-        for word in words(&result.stdout, " ") {
+        for word in all_words(&result.stdout, " ") {
             assert!(!word.contains(|c: char| c.is_whitespace()),
                     "Word {} contained whitespace!",
                     word);
@@ -132,7 +135,7 @@ fn it_prints_no_words_with_whitespace() {
 #[test]
 fn it_prints_no_empty_words() {
     repeat_run!(result, {
-        for word in words(&result.stdout, " ") {
+        for word in all_words(&result.stdout, " ") {
             assert!(word.len() > 0, "Got empty word");
         }
     })
