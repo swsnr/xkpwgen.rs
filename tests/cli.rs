@@ -170,6 +170,21 @@ fn it_has_7776_words_in_the_wordlist() {
 }
 
 #[test]
+fn it_has_no_duplicate_words_in_the_wordlist() {
+    let mut seen_words = HashSet::with_capacity(8000);
+    let mut duplicate_words = HashSet::new();
+    for word in EFF_WORDLIST.lines() {
+        if !seen_words.insert(word) {
+            duplicate_words.insert(word);
+        }
+    }
+
+    assert!(duplicate_words.is_empty(),
+            "Duplicate words found: {}",
+            duplicate_words.into_iter().collect::<Vec<_>>().join(" "));
+}
+
+#[test]
 fn it_has_no_empty_word_in_the_wordlist() {
     let stdout = assert_run(&["--words"]).stdout;
     for word in stdout.lines() {
