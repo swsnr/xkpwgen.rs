@@ -53,6 +53,7 @@ fn main() {
                  .long("length")
                  .default_value("4")
                  .help("The number of words in each password"))
+        .arg(Arg::with_name("words").long("words").help("Print the internal wordlist and exit"))
         .settings(&[AppSettings::ColoredHelp,
                     AppSettings::DontCollapseArgsInUsage,
                     // Don't put flags and options in separate --help groups
@@ -61,15 +62,21 @@ fn main() {
 
     match parse_result {
         Ok(matches) => {
-            let words = builtin_words();
-            let password_length = value_t_or_exit!(matches.value_of("length"), usize);
-            let number_of_passwords = value_t_or_exit!(matches.value_of("number"), usize);
-            for _ in 0..number_of_passwords {
-                println!("{}",
-                         rand::sample(&mut rand::thread_rng(),
-                                      words.iter().map(|s| *s),
-                                      password_length)
-                                 .join(" "));
+            if matches.is_present("words") {
+                for word in builtin_words() {
+                    println!("{}", word);
+                }
+            } else {
+                let words = builtin_words();
+                let password_length = value_t_or_exit!(matches.value_of("length"), usize);
+                let number_of_passwords = value_t_or_exit!(matches.value_of("number"), usize);
+                for _ in 0..number_of_passwords {
+                    println!("{}",
+                             rand::sample(&mut rand::thread_rng(),
+                                          words.iter().map(|s| *s),
+                                          password_length)
+                                     .join(" "));
+                }
             }
         }
         Err(error @ clap::Error { kind: clap::ErrorKind::VersionDisplayed, .. }) => {

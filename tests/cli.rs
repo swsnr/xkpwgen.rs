@@ -149,3 +149,27 @@ fn it_prints_no_empty_words() {
         }
     })
 }
+
+#[test]
+fn it_has_7776_words_in_the_wordlist() {
+    let stdout = assert_run(&["--words"]).stdout;
+    assert_eq!(stdout.lines().count(), 7776);
+}
+
+#[test]
+fn it_has_no_empty_word_in_the_wordlist() {
+    let stdout = assert_run(&["--words"]).stdout;
+    for word in stdout.lines() {
+        assert!(word.len() > 0, "Got empty word");
+    }
+}
+
+#[test]
+fn it_has_no_word_with_space_in_the_wordlist() {
+    let stdout = assert_run(&["--words"]).stdout;
+    for word in stdout.lines() {
+        assert!(!word.contains(|c: char| c.is_whitespace()),
+                "Word {} contained whitespace!",
+                word);
+    }
+}
