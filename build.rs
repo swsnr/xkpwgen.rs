@@ -36,15 +36,15 @@ static WORDLIST_SHA256: &'static [u8] = &[0xad, 0xdd, 0x35, 0x53, 0x65, 0x11, 0x
                                           0xdb, 0x99, 0x6b, 0x90, 0x3e];
 
 fn main() {
-    let out_dir = env::var("OUT_DIR").unwrap();
+    let out_dir = env::var("OUT_DIR").expect("Output directory $OUT_DIR missing!");
 
     let client = reqwest::Client::new().unwrap();
     let mut response = client.get(URL)
         .header(reqwest::header::Connection::close())
         .send()
-        .unwrap();
+        .expect("Failed to connect to EFF servers");
     let mut response_buffer = Vec::with_capacity(40000);
-    response.read_to_end(&mut response_buffer).unwrap();
+    response.read_to_end(&mut response_buffer).expect("Failed to download EFF wordlist");
 
     let mut hasher = Sha256::new();
     hasher.input(&response_buffer);
@@ -64,7 +64,9 @@ fn main() {
     let words = wordlist.lines().map(|l| l.split_whitespace().last().unwrap());
 
     let eff_wordlist = Path::new(&out_dir).join("eff_wordlist.txt");
-    let mut sink = BufWriter::new(File::create(&eff_wordlist).unwrap());
+    let mut sink = File::create(&eff_wordlist)
+        .map(BufWriter::new)
+        .expect("Failed to create wordlist file in output directory");
     for word in words {
         sink.write_all(word.as_bytes()).unwrap();
         sink.write("\n".as_bytes()).unwrap();
