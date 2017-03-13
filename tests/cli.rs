@@ -15,8 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use std::collections::HashSet;
 use std::ffi::OsStr;
 use std::process::{Command, ExitStatus, Output};
+
+static EFF_WORDLIST: &'static str = include_str!(concat!(env!("OUT_DIR"), "/eff_wordlist.txt"));
 
 struct Result {
     stdout: String,
@@ -99,6 +102,16 @@ fn it_includes_license_and_warranty_in_help() {
 }
 
 #[test]
+fn it_uses_only_words_from_the_wordlist() {
+    let words = EFF_WORDLIST.lines().collect::<HashSet<_>>();
+    repeat_run!(result, {
+        for word in all_words(&result.stdout, " ") {
+            assert!(words.contains(word), "Word {} not in EFF wordlist!", word);
+        }
+    });
+}
+
+#[test]
 fn it_generates_five_phrases_by_default() {
     repeat_run!(result, {
         assert_eq!(result.stdout.lines().count(), 5);
@@ -172,4 +185,11 @@ fn it_has_no_word_with_space_in_the_wordlist() {
                 "Word {} contained whitespace!",
                 word);
     }
+}
+
+#[test]
+fn it_uses_the_original_eff_wordlist() {
+    let stdout = assert_run(&["--words"]).stdout;
+    assert_eq!(stdout.lines().collect::<Vec<_>>(),
+               EFF_WORDLIST.lines().collect::<Vec<_>>());
 }
