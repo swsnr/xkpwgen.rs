@@ -164,9 +164,15 @@ fn it_generates_no_empty_words() {
 }
 
 #[test]
-fn it_has_7776_words_in_the_wordlist() {
+fn it_uses_the_original_eff_wordlist() {
     let stdout = assert_run(&["--words"]).stdout;
-    assert_eq!(stdout.lines().count(), 7776);
+    assert_eq!(stdout.lines().collect::<Vec<_>>(),
+               EFF_WORDLIST.lines().collect::<Vec<_>>());
+}
+
+#[test]
+fn it_has_7776_words_in_the_wordlist() {
+    assert_eq!(EFF_WORDLIST.lines().count(), 7776);
 }
 
 #[test]
@@ -186,25 +192,16 @@ fn it_has_no_duplicate_words_in_the_wordlist() {
 
 #[test]
 fn it_has_no_empty_word_in_the_wordlist() {
-    let stdout = assert_run(&["--words"]).stdout;
-    for word in stdout.lines() {
+    for word in EFF_WORDLIST.lines() {
         assert!(word.len() > 0, "Got empty word");
     }
 }
 
 #[test]
 fn it_has_no_word_with_space_in_the_wordlist() {
-    let stdout = assert_run(&["--words"]).stdout;
-    for word in stdout.lines() {
+    for word in EFF_WORDLIST.lines() {
         assert!(!word.contains(|c: char| c.is_whitespace()),
                 "Word {} contained whitespace!",
                 word);
     }
-}
-
-#[test]
-fn it_uses_the_original_eff_wordlist() {
-    let stdout = assert_run(&["--words"]).stdout;
-    assert_eq!(stdout.lines().collect::<Vec<_>>(),
-               EFF_WORDLIST.lines().collect::<Vec<_>>());
 }
