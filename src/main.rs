@@ -30,8 +30,8 @@ This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law."
 };
 
-fn parse_diceware_list(input: &str) -> Vec<&str> {
-    input.lines().map(|l| l.split_whitespace().last().unwrap()).collect()
+fn builtin_words() -> Vec<&'static str> {
+    EFF_WORDLIST.lines().collect()
 }
 
 fn main() {
@@ -61,7 +61,7 @@ fn main() {
 
     match parse_result {
         Ok(matches) => {
-            let words = parse_diceware_list(EFF_WORDLIST);
+            let words = builtin_words();
             let password_length = value_t_or_exit!(matches.value_of("length"), usize);
             let number_of_passwords = value_t_or_exit!(matches.value_of("number"), usize);
             for _ in 0..number_of_passwords {
@@ -73,7 +73,7 @@ fn main() {
             }
         }
         Err(error @ clap::Error { kind: clap::ErrorKind::VersionDisplayed, .. }) => {
-            let mut words = parse_diceware_list(EFF_WORDLIST);
+            let mut words = builtin_words();
             words.sort_by_key(|w| w.chars().count());
             print!("\n
 EFF long wordlist July 2017: {} words (min length {}, max length {})

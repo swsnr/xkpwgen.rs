@@ -21,13 +21,14 @@ extern crate sha2;
 use sha2::{Sha256, Digest};
 use std::env;
 use std::fs::File;
+use std::io::BufWriter;
 use std::io::prelude::*;
 use std::path::Path;
 
-// We use the diceware list of the EFF, which contains 7776 common English words between three and
-// nine characters.  I'm unsure about the licensing situation concerning this list so I'm not
-// shipping it with the sources but instead download it during the build and use its hash to verify
-// its authenticity.
+// We use the large diceware list of the EFF, which contains 7776 common English words between
+// three and nine characters.  I'm unsure about the licensing situation concerning this list so I'm
+// not shipping it with the sources but instead download it during the build and use its hash to
+// verify its authenticity.
 static URL: &'static str = "https://www.eff.org/files/2016/07/18/eff_large_wordlist.txt";
 static WORDLIST_SHA256: &'static [u8] = &[0xad, 0xdd, 0x35, 0x53, 0x65, 0x11, 0x59, 0x7a, 0x02,
                                           0xfa, 0x0a, 0x9f, 0xf1, 0xe5, 0x28, 0x46, 0x77, 0xb8,
@@ -36,25 +37,37 @@ static WORDLIST_SHA256: &'static [u8] = &[0xad, 0xdd, 0x35, 0x53, 0x65, 0x11, 0x
 
 fn main() {
     let out_dir = env::var("OUT_DIR").unwrap();
-    let eff_wordlist = Path::new(&out_dir).join("eff_wordlist.txt");
 
     let client = reqwest::Client::new().unwrap();
-
     let mut response = client.get(URL)
         .header(reqwest::header::Connection::close())
         .send()
         .unwrap();
-    let mut wordlist_buffer = Vec::with_capacity(40000);
-    response.read_to_end(&mut wordlist_buffer).unwrap();
+    let mut response_buffer = Vec::with_capacity(40000);
+    response.read_to_end(&mut response_buffer).unwrap();
 
     let mut hasher = Sha256::new();
-    hasher.input(&wordlist_buffer);
+    hasher.input(&response_buffer);
     let hash = hasher.result();
     if *hash != *WORDLIST_SHA256 {
         panic!("SHA256 mismatch for EFF wordlist! Report issue to \
                 https://github.com/lunaryorn/xkpwgen.rs");
     }
 
-    File::create(&eff_wordlist).unwrap().write_all(&wordlist_buffer).unwrap();
+    let wordlist = std::str::from_utf8(&response_buffer).unwrap();
+    // A diceware list as one word entry per line. A word entry consists of a number followed by
+    // whitespace followed by the actual word.  The number consists of digits between 1 and 6,
+    // where each digit is the result of rolling a six-side die.  In other words, the number is the
+    // sequence of results from repeatedly rolling a six-side die.  These numbers are intended to
+    // support "manual" generation of a passphrase; for our random sampling we don't need those and
+    // thus strip them from the final wordlist.
+    let words = wordlist.lines().map(|l| l.split_whitespace().last().unwrap());
+
+    let eff_wordlist = Path::new(&out_dir).join("eff_wordlist.txt");
+    let mut sink = BufWriter::new(File::create(&eff_wordlist).unwrap());
+    for word in words {
+        sink.write_all(word.as_bytes()).unwrap();
+        sink.write("\n".as_bytes()).unwrap();
+    }
     println!("Wrote EFF wordlist to {}", eff_wordlist.to_string_lossy());
 }
