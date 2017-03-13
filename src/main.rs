@@ -21,7 +21,7 @@
 extern crate clap;
 extern crate rand;
 
-use clap::{App, Arg};
+use clap::{App, AppSettings, Arg};
 
 static EFF_WORDLIST: &'static str = include_str!(concat!(env!("OUT_DIR"), "/eff_wordlist.txt"));
 
@@ -49,6 +49,10 @@ There is NO WARRANTY, to the extent permitted by law.")
                  .long("length")
                  .default_value("4")
                  .help("The number of words in each password"))
+        .settings(&[AppSettings::ColoredHelp,
+                    AppSettings::DontCollapseArgsInUsage,
+                    // Don't put flags and options in separate --help groups
+                    AppSettings::UnifiedHelpMessage])
         .get_matches();
 
     let words = parse_diceware_list(EFF_WORDLIST);
