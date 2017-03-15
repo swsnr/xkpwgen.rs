@@ -19,8 +19,12 @@
 
 #[macro_use]
 extern crate clap;
+extern crate atty;
 extern crate rand;
+extern crate ansi_term;
 
+use ansi_term::Colour;
+use ansi_term::Style;
 use clap::{AppSettings, Arg};
 
 static EFF_WORDLIST: &'static str = include_str!(concat!(env!("OUT_DIR"), "/eff_wordlist.txt"));
@@ -34,6 +38,27 @@ fn builtin_words() -> Vec<&'static str> {
     EFF_WORDLIST.lines().collect()
 }
 
+arg_enum! {
+    enum YesNoAuto {
+        Yes,
+        No,
+        Auto
+    }
+}
+
+fn alternating_styles(colour_setting: YesNoAuto) -> (Style, Style) {
+    let enable_colours = match colour_setting {
+        YesNoAuto::Auto => atty::is(atty::Stream::Stdout),
+        YesNoAuto::Yes => true,
+        YesNoAuto::No => false,
+    };
+    if enable_colours {
+        (Style::new().fg(Colour::Cyan), Style::new().fg(Colour::Purple))
+    } else {
+        (Style::new(), Style::new())
+    }
+}
+
 fn main() {
     let parse_result = app_from_crate!()
         .after_help(format!("Copyright (C) 2017 Sebastian Wiesner <swiesner@lunaryorn.com>\n\n{}",
@@ -41,6 +66,12 @@ fn main() {
                             .as_str())
         .version_message("Print version information")
         .help_message("Print this message")
+        .arg(Arg::with_name("colour")
+                 .alias("color")
+                 .long("colour")
+                 .possible_values(&["yes", "no", "auto"])
+                 .default_value("auto")
+                 .help("Whether to enable or disable coloured output."))
         .arg(Arg::with_name("number")
                  .short("n")
                  .long("number")
@@ -68,12 +99,14 @@ fn main() {
                 let words = builtin_words();
                 let password_length = value_t_or_exit!(matches.value_of("length"), usize);
                 let number_of_passwords = value_t_or_exit!(matches.value_of("number"), usize);
-                for _ in 0..number_of_passwords {
-                    println!("{}",
-                             rand::sample(&mut rand::thread_rng(),
-                                          words.iter().map(|s| *s),
-                                          password_length)
-                                     .join(" "));
+                let (even, odd) =
+                    alternating_styles(value_t_or_exit!(matches, "colour", YesNoAuto));
+                for lineno in 0..number_of_passwords {
+                    let style = if lineno % 2 == 0 { even } else { odd };
+                    let words = rand::sample(&mut rand::thread_rng(),
+                                             words.iter().map(|s| *s),
+                                             password_length);
+                    println!("{}", style.paint(words.join(" ")));
                 }
             }
         }
