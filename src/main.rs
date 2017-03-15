@@ -21,7 +21,7 @@
 extern crate clap;
 extern crate rand;
 
-use clap::{App, AppSettings, Arg};
+use clap::{AppSettings, Arg};
 
 static EFF_WORDLIST: &'static str = include_str!(concat!(env!("OUT_DIR"), "/eff_wordlist.txt"));
 static LICENSE: &'static str = {
@@ -35,9 +35,7 @@ fn builtin_words() -> Vec<&'static str> {
 }
 
 fn main() {
-    let parse_result = App::new("xkpwgen")
-        .version(crate_version!())
-        .about("Generate XKCD 936 passwords")
+    let parse_result = app_from_crate!()
         .after_help(format!("Copyright (C) 2017 Sebastian Wiesner <swiesner@lunaryorn.com>\n\n{}",
                             LICENSE)
                             .as_str())
