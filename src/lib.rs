@@ -18,6 +18,9 @@
 #![deny(warnings)]
 
 extern crate rand;
+#[cfg(test)]
+#[macro_use]
+extern crate quickcheck;
 
 use rand::{Rng, sample};
 
@@ -33,4 +36,57 @@ pub fn generate_password<'a, R, W, T>(mut rng: &mut R,
           T: AsRef<str> + 'a
 {
     sample(&mut rng, words.into_iter().map(AsRef::as_ref), length).join(separator)
+}
+
+#[cfg(test)]
+mod test {
+    use quickcheck::TestResult;
+    use rand::thread_rng;
+    use super::*;
+
+    fn generate(length: usize, sep: &str) -> String {
+        let words = wordlist::builtin_words();
+        generate_password(&mut thread_rng(), &words, length, sep)
+    }
+
+    quickcheck! {
+        fn has_expected_length(length: usize) -> TestResult {
+            if length == 0 {
+                TestResult::discard()
+            } else {
+                let password = generate(length, " ");
+                TestResult::from_bool(password.split(" ").count() == length)
+            }
+        }
+
+        fn uses_separator(length: usize, sep: String) -> TestResult {
+            if length == 0 || sep.len() == 0 {
+                TestResult::discard()
+            } else {
+                let password = generate(length, &sep);
+                TestResult::from_bool(password.matches(&sep).count() == (length - 1))
+            }
+        }
+
+        fn contains_only_words_from_wordlist(length: usize) -> TestResult {
+            if length == 0 {
+                TestResult::discard()
+            } else {
+                let words= wordlist::builtin_words();
+                let password = generate_password(&mut thread_rng(), &words, length, " ");
+                TestResult::from_bool(password.split(" ").all(|w| words.contains(&w)))
+            }
+        }
+
+        fn repeated_passwords_are_different(length: usize) -> TestResult {
+            if length == 0 {
+                TestResult::discard()
+            } else {
+                let words = wordlist::builtin_words();
+                let pw1 = generate_password(&mut thread_rng(), &words, length, " ");
+                let pw2 = generate_password(&mut thread_rng(), &words, length, " ");
+                TestResult::from_bool(pw1 != pw2)
+            }
+        }
+    }
 }
