@@ -24,6 +24,9 @@ atty = "^0.2"
 sha2 = "^0.4"
 reqwest = "^0.4"
 
+[dev-dependencies]
+quickcheck = "^0.4"
+
 [[bin]]
 doc = false
 name = "xkpwgen"

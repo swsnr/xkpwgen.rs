@@ -27,6 +27,7 @@ extern crate xkpwgen;
 use ansi_term::Colour;
 use ansi_term::Style;
 use clap::{App, AppSettings, Arg};
+use xkpwgen::generate_password;
 use xkpwgen::wordlist::builtin_words;
 
 macro_rules! license {
@@ -105,10 +106,9 @@ fn main() {
                     alternating_styles(value_t_or_exit!(matches, "colour", YesNoAuto));
                 for lineno in 0..number_of_passwords {
                     let style = if lineno % 2 == 0 { even } else { odd };
-                    let words = rand::sample(&mut rand::thread_rng(),
-                                             words.iter().map(|s| *s),
-                                             password_length);
-                    println!("{}", style.paint(words.join(" ")));
+                    let password =
+                        generate_password(&mut rand::thread_rng(), &words, password_length, " ");
+                    println!("{}", style.paint(password));
                 }
             }
         }

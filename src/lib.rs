@@ -17,5 +17,20 @@
 
 #![deny(warnings)]
 
+extern crate rand;
+
+use rand::{Rng, sample};
+
 pub mod wordlist;
 
+pub fn generate_password<'a, R, W, T>(mut rng: &mut R,
+                                      words: W,
+                                      length: usize,
+                                      separator: &str)
+                                      -> String
+    where R: Rng,
+          W: IntoIterator<Item = &'a T>,
+          T: AsRef<str> + 'a
+{
+    sample(&mut rng, words.into_iter().map(AsRef::as_ref), length).join(separator)
+}
