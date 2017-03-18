@@ -84,21 +84,29 @@ macro_rules! repeat_run {
     };
 }
 
-#[test]
-fn it_includes_license_and_warranty_in_help() {
-    let result = assert_run(&["--help"]);
-    assert!(result.stdout.contains("GNU GPL version 3 or later"),
+fn assert_license_and_warranty(s: &str) {
+    assert!(s.contains("GNU GPL version 3 or later"),
             "License name missing in output:
 {}",
-            result.stdout);
-    assert!(result.stdout.contains("<http://gnu.org/licenses/gpl.html>"),
+            s);
+    assert!(s.contains("<http://gnu.org/licenses/gpl.html>"),
             "License URL missing in output:
 {}",
-            result.stdout);
-    assert!(result.stdout.contains("There is NO WARRANTY, to the extent permitted by law."),
+            s);
+    assert!(s.contains("There is NO WARRANTY, to the extent permitted by law."),
             "Warranty disclaimer missing in output:
 {}",
-            result.stdout);
+            s);
+}
+
+#[test]
+fn it_includes_license_and_warranty_in_help() {
+    assert_license_and_warranty(&assert_run(&["--help"]).stdout);
+}
+
+#[test]
+fn it_includes_license_and_warranty_in_version() {
+    assert_license_and_warranty(&assert_run(&["--version"]).stdout);
 }
 
 #[test]
