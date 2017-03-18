@@ -10,8 +10,8 @@ matrix:
 before_install:
   # Add Rust binaries to path
   - export PATH="$HOME/.cargo/bin:$PATH"
-  # Check formatting
-  - cargo install rustfmt || true
+  # Install rustfmt if it does not already exist
+  - if [[ ! -x "$HOME/.cargo/bin/cargo-fmt" ]]; then cargo install rustfmt; fi
 script:
   # Check formatting of sources
   - cargo fmt -- --write-mode=diff
