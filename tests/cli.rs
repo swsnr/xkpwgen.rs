@@ -172,6 +172,24 @@ fn it_generates_no_empty_words() {
 }
 
 #[test]
+fn it_generates_different_passwords() {
+    repeat_run!(result, &["-n", "100"], {
+        let mut seen_passwords = HashSet::with_capacity(100);
+        let mut duplicate_passwords = HashSet::new();
+        for password in result.stdout.lines() {
+            if !seen_passwords.insert(password) {
+                duplicate_passwords.insert(password);
+            }
+        }
+
+        assert!(duplicate_passwords.is_empty(),
+                "Duplicate passwords found: {}",
+                duplicate_passwords.into_iter().collect::<Vec<_>>().join(", "));
+
+    });
+}
+
+#[test]
 fn it_uses_the_original_eff_wordlist() {
     let stdout = assert_run(&["--words"]).stdout;
     assert_eq!(stdout.lines().collect::<Vec<_>>(),
