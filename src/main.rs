@@ -25,14 +25,17 @@ extern crate ansi_term;
 
 use ansi_term::Colour;
 use ansi_term::Style;
-use clap::{AppSettings, Arg};
+use clap::{App, AppSettings, Arg};
 
 static EFF_WORDLIST: &'static str = include_str!(concat!(env!("OUT_DIR"), "/eff_wordlist.txt"));
-static LICENSE: &'static str = {
+
+macro_rules! license {
+    () => {
     "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law."
-};
+    }
+}
 
 fn builtin_words() -> Vec<&'static str> {
     EFF_WORDLIST.lines().collect()
@@ -59,11 +62,10 @@ fn alternating_styles(colour_setting: YesNoAuto) -> (Style, Style) {
     }
 }
 
-fn main() {
-    let parse_result = app_from_crate!()
-        .after_help(format!("Copyright (C) 2017 Sebastian Wiesner <swiesner@lunaryorn.com>\n\n{}",
-                            LICENSE)
-                            .as_str())
+fn app() -> App<'static, 'static> {
+    app_from_crate!()
+        .after_help(concat!("Copyright (C) 2017 Sebastian Wiesner <swiesner@lunaryorn.com>\n\n",
+                            license!()))
         .version_message("Print version information")
         .help_message("Print this message")
         .arg(Arg::with_name("colour")
@@ -87,7 +89,10 @@ fn main() {
                     AppSettings::DontCollapseArgsInUsage,
                     // Don't put flags and options in separate --help groups
                     AppSettings::UnifiedHelpMessage])
-        .get_matches_safe();
+}
+
+fn main() {
+    let parse_result = app().get_matches_safe();
 
     match parse_result {
         Ok(matches) => {
@@ -123,7 +128,7 @@ EFF long wordlist July 2017: {} words (min length {}, max length {})
                        .unwrap()
                        .chars()
                        .count(),
-                   LICENSE);
+                   license!());
             error.exit();
         }
         Err(error) => error.exit(),
