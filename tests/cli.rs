@@ -51,12 +51,13 @@ fn run<S: AsRef<OsStr>>(args: &[S]) -> Result {
 fn assert_run<S: AsRef<OsStr>>(args: &[S]) -> Result {
     let result = run(args);
     assert!(result.status.success(),
-            "xkpwgen failed with output:
+            "xkpwgen failed with status {} and output:
 stdout:
 {}
 stderr:
 {}
 ",
+            result.status,
             result.stdout,
             result.stderr);
     result
@@ -194,40 +195,4 @@ fn it_uses_the_original_eff_wordlist() {
     let stdout = assert_run(&["--words"]).stdout;
     assert_eq!(stdout.lines().collect::<Vec<_>>(),
                EFF_WORDLIST.lines().collect::<Vec<_>>());
-}
-
-#[test]
-fn it_has_7776_words_in_the_wordlist() {
-    assert_eq!(EFF_WORDLIST.lines().count(), 7776);
-}
-
-#[test]
-fn it_has_no_duplicate_words_in_the_wordlist() {
-    let mut seen_words = HashSet::with_capacity(8000);
-    let mut duplicate_words = HashSet::new();
-    for word in EFF_WORDLIST.lines() {
-        if !seen_words.insert(word) {
-            duplicate_words.insert(word);
-        }
-    }
-
-    assert!(duplicate_words.is_empty(),
-            "Duplicate words found: {}",
-            duplicate_words.into_iter().collect::<Vec<_>>().join(" "));
-}
-
-#[test]
-fn it_has_no_empty_word_in_the_wordlist() {
-    for word in EFF_WORDLIST.lines() {
-        assert!(word.len() > 0, "Got empty word");
-    }
-}
-
-#[test]
-fn it_has_no_word_with_space_in_the_wordlist() {
-    for word in EFF_WORDLIST.lines() {
-        assert!(!word.contains(|c: char| c.is_whitespace()),
-                "Word {} contained whitespace!",
-                word);
-    }
 }

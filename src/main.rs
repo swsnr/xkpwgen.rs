@@ -22,12 +22,12 @@ extern crate clap;
 extern crate atty;
 extern crate rand;
 extern crate ansi_term;
+extern crate xkpwgen;
 
 use ansi_term::Colour;
 use ansi_term::Style;
 use clap::{App, AppSettings, Arg};
-
-static EFF_WORDLIST: &'static str = include_str!(concat!(env!("OUT_DIR"), "/eff_wordlist.txt"));
+use xkpwgen::wordlist::builtin_words;
 
 macro_rules! license {
     () => {
@@ -37,9 +37,6 @@ There is NO WARRANTY, to the extent permitted by law."
     }
 }
 
-fn builtin_words() -> Vec<&'static str> {
-    EFF_WORDLIST.lines().collect()
-}
 
 arg_enum! {
     enum YesNoAuto {
