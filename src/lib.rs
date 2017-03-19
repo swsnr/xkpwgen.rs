@@ -40,9 +40,9 @@ pub fn generate_password<'a, R, W, T>(mut rng: &mut R,
 
 #[cfg(test)]
 mod test {
+    use super::*;
     use quickcheck::TestResult;
     use rand::thread_rng;
-    use super::*;
 
     fn generate(length: usize, sep: &str) -> String {
         let words = wordlist::builtin_words();
