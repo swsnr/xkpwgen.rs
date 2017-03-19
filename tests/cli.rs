@@ -15,11 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+extern crate xkpwgen;
+
 use std::collections::HashSet;
 use std::ffi::OsStr;
 use std::process::{Command, ExitStatus, Output};
-
-static EFF_WORDLIST: &'static str = include_str!(concat!(env!("OUT_DIR"), "/eff_wordlist.txt"));
+use xkpwgen::wordlist;
 
 struct Result {
     stdout: String,
@@ -112,7 +113,7 @@ fn it_includes_license_and_warranty_in_version() {
 
 #[test]
 fn it_uses_only_words_from_the_wordlist() {
-    let words = EFF_WORDLIST.lines().collect::<HashSet<_>>();
+    let words = wordlist::builtin_words().into_iter().collect::<HashSet<_>>();
     repeat_run!(result, {
         for word in all_words(&result.stdout, " ") {
             assert!(words.contains(word), "Word {} not in EFF wordlist!", word);
@@ -153,26 +154,6 @@ fn it_generates_the_given_number_of_words_per_password() {
 }
 
 #[test]
-fn it_generates_no_words_with_whitespace() {
-    repeat_run!(result, {
-        for word in all_words(&result.stdout, " ") {
-            assert!(!word.contains(|c: char| c.is_whitespace()),
-                    "Word {} contained whitespace!",
-                    word);
-        }
-    })
-}
-
-#[test]
-fn it_generates_no_empty_words() {
-    repeat_run!(result, {
-        for word in all_words(&result.stdout, " ") {
-            assert!(word.len() > 0, "Got empty word");
-        }
-    })
-}
-
-#[test]
 fn it_generates_different_passwords() {
     repeat_run!(result, &["-n", "100"], {
         let mut seen_passwords = HashSet::with_capacity(100);
@@ -194,5 +175,5 @@ fn it_generates_different_passwords() {
 fn it_uses_the_original_eff_wordlist() {
     let stdout = assert_run(&["--words"]).stdout;
     assert_eq!(stdout.lines().collect::<Vec<_>>(),
-               EFF_WORDLIST.lines().collect::<Vec<_>>());
+               wordlist::builtin_words());
 }
