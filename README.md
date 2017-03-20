@@ -7,13 +7,13 @@ Generate [XKCD 936](https://xkcd.com/936/) passwords:
 
 ![](http://imgs.xkcd.com/comics/password_strength.png)
 
-# Install
+## Install
 
 ```console
 $ cargo install xkpwgen
 ```
 
-# Use
+## Use
 
 Invoke `xkpwgen` to generate five passwords:
 
@@ -39,7 +39,7 @@ submersed tackle font gentile navy same boxing tartness trodden confined
 
 See `xkpwgen --help` for more information.
 
-# Copyright
+## Copyright
 
 > Copyright (C) 2017  Sebastian Wiesner
 >
