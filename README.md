@@ -13,6 +13,9 @@ Generate [XKCD 936](https://xkcd.com/936/) passwords:
 $ cargo install xkpwgen
 ```
 
+Building this tool requires network access because the build script fetches the
+wordlist from the EFF (see below).
+
 ## Use
 
 Invoke `xkpwgen` to generate five passwords:
@@ -38,6 +41,22 @@ submersed tackle font gentile navy same boxing tartness trodden confined
 `xkpwgen --words` prints the list of words used in passwords and exists.
 
 See `xkpwgen --help` for more information.
+
+## Wordlist
+
+This tool uses the [EFF long wordlist][1] which contains 7776 common English
+words between three and nine characters in length, at an average of seven
+characters per word.
+
+Due to unclear licensing of the wordlist is not contained in this repository.
+The build script downloads and verifies the wordlist from the above URL before
+embedding it in the final executable.  For this reason, the license of the final
+executable is unclear as well, distribute at your own risk.
+
+If you happen to have licensing information for the wordlist, please let me
+know.
+
+[1]: https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases
 
 ## Copyright
 
