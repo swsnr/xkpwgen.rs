@@ -1,4 +1,4 @@
-# XKpwgen [![Travis branch][travis-badge]][travis]
+# xkpwgen [![Travis branch][travis-badge]][travis]
 
 [travis-badge]: https://img.shields.io/travis/lunaryorn/xkpwgen.rs/master.svg?maxAge=2592000
 [travis]: https://travis-ci.org/lunaryorn/xkpwgen.rs
