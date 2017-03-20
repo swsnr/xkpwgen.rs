@@ -15,7 +15,29 @@ $ cargo install xkpwgen
 
 # Use
 
-TODO
+Invoke `xkpwgen` to generate five passwords:
+
+```console
+$ xkpwgen
+veneering hazing aging diner
+hypertext repose salvaging barometer
+quote parchment boxy hurt
+gift womanhood step mammary
+october hemstitch darkness agony
+```
+
+Use `-l` to change the length of passwords, and `-n` to change the number of
+passwords:
+
+```console
+$ xkpwgen -l 10 -n 2
+paralyses unawake both wish gawk islamist taco charity shorts barmaid
+submersed tackle font gentile navy same boxing tartness trodden confined
+```
+
+`xkpwgen --words` prints the list of words used in passwords and exists.
+
+See `xkpwgen --help` for more information.
 
 # Copyright
 
