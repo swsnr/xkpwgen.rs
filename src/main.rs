@@ -27,6 +27,7 @@ extern crate xkpwgen;
 use ansi_term::Colour;
 use ansi_term::Style;
 use clap::{App, AppSettings, Arg};
+use rand::os::OsRng;
 use xkpwgen::generate_password;
 use xkpwgen::wordlist::builtin_words;
 
@@ -99,6 +100,7 @@ fn main() {
                     println!("{}", word);
                 }
             } else {
+                let mut rng = OsRng::new().expect("Failed to initialize random generator");
                 let words = builtin_words();
                 let password_length = value_t_or_exit!(matches.value_of("length"), usize);
                 let number_of_passwords = value_t_or_exit!(matches.value_of("number"), usize);
@@ -106,8 +108,7 @@ fn main() {
                     alternating_styles(&value_t_or_exit!(matches, "colour", YesNoAuto));
                 for lineno in 0..number_of_passwords {
                     let style = if lineno % 2 == 0 { even } else { odd };
-                    let password =
-                        generate_password(&mut rand::thread_rng(), &words, password_length, " ");
+                    let password = generate_password(&mut rng, &words, password_length, " ");
                     println!("{}", style.paint(password));
                 }
             }
