@@ -47,8 +47,8 @@ arg_enum! {
     }
 }
 
-fn alternating_styles(colour_setting: YesNoAuto) -> (Style, Style) {
-    let enable_colours = match colour_setting {
+fn alternating_styles(colour_setting: &YesNoAuto) -> (Style, Style) {
+    let enable_colours = match *colour_setting {
         YesNoAuto::Auto => atty::is(atty::Stream::Stdout),
         YesNoAuto::Yes => true,
         YesNoAuto::No => false,
@@ -103,7 +103,7 @@ fn main() {
                 let password_length = value_t_or_exit!(matches.value_of("length"), usize);
                 let number_of_passwords = value_t_or_exit!(matches.value_of("number"), usize);
                 let (even, odd) =
-                    alternating_styles(value_t_or_exit!(matches, "colour", YesNoAuto));
+                    alternating_styles(&value_t_or_exit!(matches, "colour", YesNoAuto));
                 for lineno in 0..number_of_passwords {
                     let style = if lineno % 2 == 0 { even } else { odd };
                     let password =
