@@ -12,10 +12,13 @@ before_install:
   - export PATH="$HOME/.cargo/bin:$PATH"
   # Install rustfmt if it does not already exist
   - if [[ ! -x "$HOME/.cargo/bin/cargo-fmt" ]]; then cargo install rustfmt; fi
+  # On nightly install clippy
+  - if [[ ! -x "$HOME/.cargo/bin/cargo-clippy" && "$TRAVIS_RUST_VERSION" == "nightly"]]; then cargo install clippy; fi
 script:
   # Check formatting of sources
   - cargo fmt -- --write-mode=diff
   - cargo build --verbose
+  - if [[ "$TRAVIS_RUST_VERSION" == "nightly" ]]; then cargo clippy --verbose; fi
   - cargo test --verbose
   - cargo bench --verbose
 cache: cargo
