@@ -22,3 +22,6 @@ script:
   - cargo test --verbose
   - cargo bench --verbose
 cache: cargo
+notifications:
+  # Disable all email notifications; we have CCMenu
+  email: false
