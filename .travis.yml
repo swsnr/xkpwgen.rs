@@ -20,7 +20,7 @@ script:
   - cargo build --verbose
   - if [[ "$TRAVIS_RUST_VERSION" == "nightly" ]]; then cargo clippy --verbose; fi
   - cargo test --verbose
-  - cargo bench --verbose
+  - if [[ "$TRAVIS_RUST_VERSION" == "nightly" ]]; then cargo bench --verbose; fi
 cache: cargo
 notifications:
   # Disable all email notifications; we have CCMenu
