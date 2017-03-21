@@ -11,6 +11,12 @@ license = "GPL-3"
 authors = ["Sebastian Wiesner <swiesner@lunaryorn.com>"]
 build = "build.rs"
 
+[package.metadata.release]
+sign-commit = true
+pre-release-commit-message = "Release {{version}}"
+pro-release-commit-message = "Set version to {{version}}"
+tag-message = "xkpwgen {{prefix}}-{{version}}"
+
 [badges]
 travis-ci = { repository = "https://github.com/lunaryorn/xkpwgen.rs" }
 
