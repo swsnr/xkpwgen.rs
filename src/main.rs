@@ -26,7 +26,7 @@ extern crate xkpwgen;
 
 use ansi_term::Colour;
 use ansi_term::Style;
-use clap::{App, AppSettings, Arg};
+use clap::{App, AppSettings, Arg, ArgMatches};
 use rand::os::OsRng;
 use xkpwgen::generate_password;
 use xkpwgen::wordlist::builtin_words;
@@ -36,28 +36,6 @@ macro_rules! license {
     "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law."
-    }
-}
-
-
-arg_enum! {
-    enum YesNoAuto {
-        Yes,
-        No,
-        Auto
-    }
-}
-
-fn alternating_styles(colour_setting: &YesNoAuto) -> (Style, Style) {
-    let enable_colours = match *colour_setting {
-        YesNoAuto::Auto => atty::is(atty::Stream::Stdout),
-        YesNoAuto::Yes => true,
-        YesNoAuto::No => false,
-    };
-    if enable_colours {
-        (Style::new().fg(Colour::Cyan), Style::new().fg(Colour::Purple))
-    } else {
-        (Style::new(), Style::new())
     }
 }
 
@@ -97,30 +75,76 @@ fn app() -> App<'static, 'static> {
                     AppSettings::UnifiedHelpMessage])
 }
 
+arg_enum! {
+    enum YesNoAuto {
+        Yes,
+        No,
+        Auto
+    }
+}
+
+struct Options<'a> {
+    print_wordlist: bool,
+    length_of_password: usize,
+    number_of_passwords: usize,
+    colour_output: YesNoAuto,
+    word_separator: &'a str,
+}
+
+impl<'a> Options<'a> {
+    fn from_matches(matches: &'a ArgMatches<'a>) -> clap::Result<Options<'a>> {
+        let length = value_t!(matches.value_of("length"), usize)?;
+        let number = value_t!(matches.value_of("number"), usize)?;
+        let colour = value_t!(matches, "colour", YesNoAuto)?;
+        // Separator has a default value, so we can safely unwrap here!
+        let separator = matches.value_of("separator").unwrap();
+        Ok(Options {
+               print_wordlist: matches.is_present("words"),
+               length_of_password: length,
+               number_of_passwords: number,
+               colour_output: colour,
+               word_separator: separator,
+           })
+    }
+
+    fn colour_styles(&self) -> (Style, Style) {
+        let enable_colours = match self.colour_output {
+            YesNoAuto::Auto => atty::is(atty::Stream::Stdout),
+            YesNoAuto::Yes => true,
+            YesNoAuto::No => false,
+        };
+        if enable_colours {
+            (Style::new().fg(Colour::Cyan), Style::new().fg(Colour::Purple))
+        } else {
+            (Style::new(), Style::new())
+        }
+    }
+}
+
 fn main() {
     let parse_result = app().get_matches_safe();
 
     match parse_result {
         Ok(matches) => {
-            if matches.is_present("words") {
+            let options = Options::from_matches(&matches).unwrap_or_else(|e| e.exit());
+            if options.print_wordlist {
                 for word in builtin_words() {
                     println!("{}", word);
                 }
             } else {
                 let mut rng = OsRng::new().expect("Failed to initialize random generator");
                 let words = builtin_words();
-                let password_length = value_t_or_exit!(matches.value_of("length"), usize);
-                let number_of_passwords = value_t_or_exit!(matches.value_of("number"), usize);
-                let colour = value_t_or_exit!(matches, "colour", YesNoAuto);
-                let separator = matches.value_of("separator").unwrap();
-                let (even_style, odd_style) = alternating_styles(&colour);
-                for lineno in 0..number_of_passwords {
+                let (even_style, odd_style) = options.colour_styles();
+                for lineno in 0..options.number_of_passwords {
                     let style = if lineno % 2 == 0 {
                         even_style
                     } else {
                         odd_style
                     };
-                    let password = generate_password(&mut rng, &words, password_length, separator);
+                    let password = generate_password(&mut rng,
+                                                     &words,
+                                                     options.length_of_password,
+                                                     options.word_separator);
                     println!("{}", style.paint(password));
                 }
             }
