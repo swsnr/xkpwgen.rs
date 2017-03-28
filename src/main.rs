@@ -73,6 +73,11 @@ fn app() -> App<'static, 'static> {
                  .possible_values(&["yes", "no", "auto"])
                  .default_value("auto")
                  .help("Whether to enable or disable coloured output."))
+        .arg(Arg::with_name("separator")
+                 .short("s")
+                 .long("separator")
+                 .default_value(" ")
+                 .help("The separator between words in a password"))
         .arg(Arg::with_name("number")
                  .short("n")
                  .long("number")
@@ -107,6 +112,7 @@ fn main() {
                 let password_length = value_t_or_exit!(matches.value_of("length"), usize);
                 let number_of_passwords = value_t_or_exit!(matches.value_of("number"), usize);
                 let colour = value_t_or_exit!(matches, "colour", YesNoAuto);
+                let separator = matches.value_of("separator").unwrap();
                 let (even_style, odd_style) = alternating_styles(&colour);
                 for lineno in 0..number_of_passwords {
                     let style = if lineno % 2 == 0 {
@@ -114,7 +120,7 @@ fn main() {
                     } else {
                         odd_style
                     };
-                    let password = generate_password(&mut rng, &words, password_length, " ");
+                    let password = generate_password(&mut rng, &words, password_length, separator);
                     println!("{}", style.paint(password));
                 }
             }

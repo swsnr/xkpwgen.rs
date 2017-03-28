@@ -156,6 +156,15 @@ fn it_generates_the_given_number_of_words_per_password() {
 }
 
 #[test]
+fn it_uses_the_given_separator() {
+    repeat_run!(result, &["-s", ":"], {
+        for password in result.stdout.lines() {
+            assert_eq!(all_words(password, ":").len(), 4);
+        }
+    });
+}
+
+#[test]
 fn it_generates_different_passwords() {
     repeat_run!(result, &["-n", "100"], {
         let mut seen_passwords = HashSet::with_capacity(100);
