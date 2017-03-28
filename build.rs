@@ -39,12 +39,15 @@ fn main() {
     let out_dir = env::var("OUT_DIR").expect("Output directory $OUT_DIR missing!");
 
     let client = reqwest::Client::new().unwrap();
-    let mut response = client.get(URL)
+    let mut response = client
+        .get(URL)
         .header(reqwest::header::Connection::close())
         .send()
         .expect("Failed to connect to EFF servers");
     let mut response_buffer = Vec::with_capacity(40000);
-    response.read_to_end(&mut response_buffer).expect("Failed to download EFF wordlist");
+    response
+        .read_to_end(&mut response_buffer)
+        .expect("Failed to download EFF wordlist");
 
     let mut hasher = Sha256::new();
     hasher.input(&response_buffer);
@@ -61,7 +64,9 @@ fn main() {
     // sequence of results from repeatedly rolling a six-side die.  These numbers are intended to
     // support "manual" generation of a passphrase; for our random sampling we don't need those and
     // thus strip them from the final wordlist.
-    let words = wordlist.lines().map(|l| l.split_whitespace().last().unwrap());
+    let words = wordlist
+        .lines()
+        .map(|l| l.split_whitespace().last().unwrap());
 
     let eff_wordlist = Path::new(&out_dir).join("eff_wordlist.txt");
     let mut sink = File::create(&eff_wordlist)

@@ -83,7 +83,9 @@ fn app() -> App<'static, 'static> {
                  .long("length")
                  .default_value("4")
                  .help("The number of words in each password"))
-        .arg(Arg::with_name("words").long("words").help("Print the internal wordlist and exit"))
+        .arg(Arg::with_name("words")
+                 .long("words")
+                 .help("Print the internal wordlist and exit"))
         .settings(&[AppSettings::ColoredHelp,
                     AppSettings::DontCollapseArgsInUsage,
                     // Don't put flags and options in separate --help groups
@@ -104,10 +106,14 @@ fn main() {
                 let words = builtin_words();
                 let password_length = value_t_or_exit!(matches.value_of("length"), usize);
                 let number_of_passwords = value_t_or_exit!(matches.value_of("number"), usize);
-                let (even, odd) =
-                    alternating_styles(&value_t_or_exit!(matches, "colour", YesNoAuto));
+                let colour = value_t_or_exit!(matches, "colour", YesNoAuto);
+                let (even_style, odd_style) = alternating_styles(&colour);
                 for lineno in 0..number_of_passwords {
-                    let style = if lineno % 2 == 0 { even } else { odd };
+                    let style = if lineno % 2 == 0 {
+                        even_style
+                    } else {
+                        odd_style
+                    };
                     let password = generate_password(&mut rng, &words, password_length, " ");
                     println!("{}", style.paint(password));
                 }
@@ -122,10 +128,7 @@ EFF long wordlist July 2017: {} words (min length {}, max length {})
 {}",
                    words.len(),
                    words[0].chars().count(),
-                   words.last()
-                       .unwrap()
-                       .chars()
-                       .count(),
+                   words.last().unwrap().chars().count(),
                    license!());
             error.exit();
         }

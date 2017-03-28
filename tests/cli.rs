@@ -113,7 +113,9 @@ fn it_includes_license_and_warranty_in_version() {
 
 #[test]
 fn it_uses_only_words_from_the_wordlist() {
-    let words = wordlist::builtin_words().into_iter().collect::<HashSet<_>>();
+    let words = wordlist::builtin_words()
+        .into_iter()
+        .collect::<HashSet<_>>();
     repeat_run!(result, {
         for word in all_words(&result.stdout, " ") {
             assert!(words.contains(word), "Word {} not in EFF wordlist!", word);
@@ -166,7 +168,10 @@ fn it_generates_different_passwords() {
 
         assert!(duplicate_passwords.is_empty(),
                 "Duplicate passwords found: {}",
-                duplicate_passwords.into_iter().collect::<Vec<_>>().join(", "));
+                duplicate_passwords
+                    .into_iter()
+                    .collect::<Vec<_>>()
+                    .join(", "));
 
     });
 }

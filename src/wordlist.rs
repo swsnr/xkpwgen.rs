@@ -43,7 +43,10 @@ mod test {
 
         assert!(duplicate_words.is_empty(),
                 "Duplicate words found: {}",
-                duplicate_words.into_iter().collect::<Vec<_>>().join(" "));
+                duplicate_words
+                    .into_iter()
+                    .collect::<Vec<_>>()
+                    .join(" "));
     }
 
     #[test]
