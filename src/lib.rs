@@ -62,6 +62,10 @@ mod test {
         fn uses_separator(length: usize, sep: String) -> TestResult {
             if length == 0 || sep.len() == 0 {
                 TestResult::discard()
+            } else if sep.chars().all(|c| c.is_alphanumeric()) {
+                // Discard alphanumeric-only separators because these might appear in the chosen
+                // words and thus make the separator ambiguous, failing the test
+                TestResult::discard()
             } else {
                 let password = generate(length, &sep);
                 TestResult::from_bool(password.matches(&sep).count() == (length - 1))
