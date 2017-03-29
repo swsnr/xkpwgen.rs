@@ -9,7 +9,6 @@ keywords = ["xkcd", "936", "password"]
 categories = ["command-line-utilities", "text-processing"]
 license = "GPL-3.0"
 authors = ["Sebastian Wiesner <swiesner@lunaryorn.com>"]
-build = "build.rs"
 
 [package.metadata.release]
 sign-commit = true
@@ -25,10 +24,6 @@ rand = "^0.3"
 clap = "^2.21"
 ansi_term = "^0.9"
 atty = "^0.2"
-
-[build-dependencies]
-sha2 = "^0.4"
-reqwest = "^0.4"
 
 [dev-dependencies]
 quickcheck = "^0.4"

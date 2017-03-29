@@ -15,7 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-static EFF_WORDLIST: &'static str = include_str!(concat!(env!("OUT_DIR"), "/eff_wordlist.txt"));
+// Include the large diceware wordlist provided by the EFF in the binary, from
+// <https://www.eff.org/files/2016/07/18/eff_large_wordlist.txt>.  See
+// <https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases> for the corresponding
+// blog post.  The wordlist is freely available under the CC BY 3.0 US license, see
+// <https://www.eff.org/copyright> for more information about the copyright of the EFF.
+static EFF_WORDLIST: &'static str = include_str!("eff_large_diceware_wordlist.txt");
 
 pub fn builtin_words() -> Vec<&'static str> {
     EFF_WORDLIST.lines().collect()

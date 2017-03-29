@@ -86,7 +86,22 @@ macro_rules! repeat_run {
     };
 }
 
-fn assert_license_and_warranty(s: &str) {
+#[test]
+fn it_includes_eff_copyright_in_help() {
+    let s = assert_run(&["--help"]).stdout;
+    assert!(s.contains("wordlist copyright (C) 2016 EFF <https://www.eff.org/copyright>"),
+            "EFF wordlist copyright missing from --help:
+{}",
+            s);
+}
+
+#[test]
+fn it_includes_license_and_warranty_in_version() {
+    let s = assert_run(&["--version"]).stdout;
+    assert!(s.contains("wordlist license CC BY 3.0 US"),
+            "Wordlist license missing in output:
+{}",
+            s);
     assert!(s.contains("GNU GPL version 3 or later"),
             "License name missing in output:
 {}",
@@ -99,16 +114,6 @@ fn assert_license_and_warranty(s: &str) {
             "Warranty disclaimer missing in output:
 {}",
             s);
-}
-
-#[test]
-fn it_includes_license_and_warranty_in_help() {
-    assert_license_and_warranty(&assert_run(&["--help"]).stdout);
-}
-
-#[test]
-fn it_includes_license_and_warranty_in_version() {
-    assert_license_and_warranty(&assert_run(&["--version"]).stdout);
 }
 
 #[test]

@@ -31,19 +31,19 @@ use rand::os::OsRng;
 use xkpwgen::generate_password;
 use xkpwgen::wordlist::builtin_words;
 
-macro_rules! license {
-    () => {
-    "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
-This is free software: you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law."
-    }
-}
+static LICENSE: &'static str = "\
+wordlist license CC BY 3.0 US: <http://creativecommons.org/licenses/by/3.0/us/>.
+
+xkpwgen license GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+xkpwgen is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.";
 
 fn app() -> App<'static, 'static> {
     app_from_crate!()
-        .after_help(concat!("Copyright (C) 2017 Sebastian Wiesner <swiesner@lunaryorn.com>\n\n",
-                            license!()))
-        .version_message("Print version information")
+        .after_help("\
+xkpwgen  copyright (C) 2017 Sebastian Wiesner <swiesner@lunaryorn.com>
+wordlist copyright (C) 2016 EFF <https://www.eff.org/copyright>")
+        .version_message("Print version and license information")
         .help_message("Print this message")
         .arg(Arg::with_name("colour")
                  .alias("color")
@@ -153,13 +153,13 @@ fn main() {
             let mut words = builtin_words();
             words.sort_by_key(|w| w.chars().count());
             print!("\n
-EFF long wordlist July 2017: {} words (min length {}, max length {})
+EFF long wordlist July 2016: {} words (min length {}, max length {})
 
 {}",
                    words.len(),
                    words[0].chars().count(),
                    words.last().unwrap().chars().count(),
-                   license!());
+                   LICENSE);
             error.exit();
         }
         Err(error) => error.exit(),
