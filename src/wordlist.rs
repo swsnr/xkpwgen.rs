@@ -26,6 +26,23 @@ pub fn builtin_words() -> Vec<&'static str> {
     EFF_WORDLIST.lines().collect()
 }
 
+pub struct WordlistStatistics {
+    pub number_of_words: usize,
+    pub min_word_length: usize,
+    pub max_word_length: usize,
+}
+
+impl WordlistStatistics {
+    pub fn from_words<'a>(mut words: Vec<&'a str>) -> WordlistStatistics {
+        words.sort_by_key(|w| w.chars().count());
+        WordlistStatistics {
+            number_of_words: words.len(),
+            min_word_length: words[0].chars().count(),
+            max_word_length: words.last().unwrap().chars().count(),
+        }
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::builtin_words;
