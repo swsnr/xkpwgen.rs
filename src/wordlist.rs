@@ -33,7 +33,7 @@ pub struct WordlistStatistics {
 }
 
 impl WordlistStatistics {
-    pub fn from_words<'a>(mut words: Vec<&'a str>) -> WordlistStatistics {
+    pub fn from_words(mut words: Vec<&str>) -> WordlistStatistics {
         words.sort_by_key(|w| w.chars().count());
         WordlistStatistics {
             number_of_words: words.len(),
