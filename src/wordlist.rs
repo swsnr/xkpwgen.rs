@@ -33,12 +33,24 @@ pub struct WordlistStatistics {
 }
 
 impl WordlistStatistics {
-    pub fn from_words(mut words: Vec<&str>) -> WordlistStatistics {
-        words.sort_by_key(|w| w.chars().count());
-        WordlistStatistics {
-            number_of_words: words.len(),
-            min_word_length: words[0].chars().count(),
-            max_word_length: words.last().unwrap().chars().count(),
+    pub fn from_words<'a, W, T>(words: W) -> WordlistStatistics
+        where W: IntoIterator<Item = &'a T>,
+              T: AsRef<str> + 'a
+    {
+        let mut lengths: Vec<usize> = words.into_iter().map(|w| w.as_ref().chars().count()).collect();
+        if lengths.is_empty() {
+            WordlistStatistics {
+                number_of_words: 0,
+                min_word_length: 0,
+                max_word_length: 0,
+            }
+        } else {
+            lengths.sort();
+            WordlistStatistics {
+                number_of_words: lengths.len(),
+                min_word_length: lengths[0],
+                max_word_length: lengths[lengths.len() - 1],
+            }
         }
     }
 }

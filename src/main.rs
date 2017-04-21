@@ -85,7 +85,8 @@ impl<'a> Options<'a> {
 }
 
 fn main() {
-    let stats = WordlistStatistics::from_words(builtin_words());
+    let words = builtin_words();
+    let stats = WordlistStatistics::from_words(&words);
     let long_version = format!("{}\n
 EFF long wordlist July 2016: {} words (min length {}, max length {})
 
@@ -139,7 +140,6 @@ wordlist copyright (C) 2016 EFF <https://www.eff.org/copyright>")
         }
     } else {
         let mut rng = OsRng::new().expect("Failed to initialize random generator");
-        let words = builtin_words();
         let (even_style, odd_style) = options.colour_styles();
         for lineno in 0..options.number_of_passwords {
             let style = if lineno % 2 == 0 {
