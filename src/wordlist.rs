@@ -30,6 +30,17 @@ pub struct WordlistStatistics {
     pub number_of_words: usize,
     pub min_word_length: usize,
     pub max_word_length: usize,
+    pub avg_word_length: f64,
+    pub med_word_length: usize,
+}
+
+fn median(x: &[usize]) -> usize {
+    let n = x.len();
+    if n % 2 == 1 {
+        x[(n - 1) / 2]
+    } else {
+        (x[n / 2] + x[(n / 2) - 1]) / 2
+    }
 }
 
 impl WordlistStatistics {
@@ -37,19 +48,27 @@ impl WordlistStatistics {
         where W: IntoIterator<Item = &'a T>,
               T: AsRef<str> + 'a
     {
-        let mut lengths: Vec<usize> = words.into_iter().map(|w| w.as_ref().chars().count()).collect();
+        let mut lengths: Vec<usize> = words
+            .into_iter()
+            .map(|w| w.as_ref().chars().count())
+            .collect();
         if lengths.is_empty() {
             WordlistStatistics {
                 number_of_words: 0,
                 min_word_length: 0,
                 max_word_length: 0,
+                avg_word_length: 0.0,
+                med_word_length: 0,
             }
         } else {
             lengths.sort();
+            let sum_of_lengths: usize = lengths.iter().sum();
             WordlistStatistics {
                 number_of_words: lengths.len(),
                 min_word_length: lengths[0],
                 max_word_length: lengths[lengths.len() - 1],
+                avg_word_length: (sum_of_lengths as f64) / lengths.len() as f64,
+                med_word_length: median(&lengths),
             }
         }
     }

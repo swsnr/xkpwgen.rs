@@ -88,13 +88,15 @@ fn main() {
     let words = builtin_words();
     let stats = WordlistStatistics::from_words(&words);
     let long_version = format!("{}\n
-EFF long wordlist July 2016: {} words (min length {}, max length {})
+EFF long wordlist July 2016: {} words (lengths: min {}, max {}, avg {:.2}, median: {})
 
 {}",
                                crate_version!(),
                                stats.number_of_words,
                                stats.min_word_length,
                                stats.max_word_length,
+                               stats.avg_word_length,
+                               stats.med_word_length,
                                LICENSE);
     let matches = app_from_crate!()
         .after_help("\
