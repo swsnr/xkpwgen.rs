@@ -1,6 +1,8 @@
-# xkpwgen [![Travis branch][travis-badge]][travis]
+# xkpwgen [![Current release][crates-badge]][crates] [![Build status][travis-badge]][travis]
 
-[travis-badge]: https://img.shields.io/travis/lunaryorn/xkpwgen.rs/master.svg?maxAge=2592000
+[crates-badge]: https://img.shields.io/crates/v/xkpwgen.svg
+[crates]: https://crates.io/crates/xkpwgen
+[travis-badge]: https://img.shields.io/travis/lunaryorn/xkpwgen.rs/master.svg
 [travis]: https://travis-ci.org/lunaryorn/xkpwgen.rs
 
 Generate [XKCD 936](https://xkcd.com/936/) passwords:
