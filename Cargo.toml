@@ -17,7 +17,7 @@ pro-release-commit-message = "Set version to {{version}}"
 tag-message = "xkpwgen {{prefix}}-{{version}}"
 
 [badges]
-travis-ci = { repository = "https://github.com/lunaryorn/xkpwgen.rs" }
+travis-ci = { repository = "lunaryorn/xkpwgen.rs" }
 
 [dependencies]
 rand = "^0.3"
