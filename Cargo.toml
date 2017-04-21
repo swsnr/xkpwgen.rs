@@ -1,6 +1,6 @@
 [package]
 name = "xkpwgen"
-version = "0.4.2-pre"
+version = "0.5.0"
 description = "Generate XKCD 936 passwords"
 readme = "README.md"
 homepage = "https://github.com/lunaryorn/xkpwgen.rs"
