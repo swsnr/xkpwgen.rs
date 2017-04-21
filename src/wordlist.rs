@@ -15,22 +15,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Include the large diceware wordlist provided by the EFF in the binary, from
-// <https://www.eff.org/files/2016/07/18/eff_large_wordlist.txt>.  See
-// <https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases> for the corresponding
-// blog post.  The wordlist is freely available under the CC BY 3.0 US license, see
-// <https://www.eff.org/copyright> for more information about the copyright of the EFF.
+//! Provide wordlists.
+//!
+//! This module contains the built-in list of words, and provides helpers to collect statistics
+//! about a wordlist.
+
+// Include the wordlist in the binary
 static EFF_WORDLIST: &'static str = include_str!("eff_large_diceware_wordlist.txt");
 
+/// Get the list of built-in words.
+///
+/// This function returns the [large diceware wordlist from the EFF][1] ([download][2]).  This list
+/// contains 7776 common English words between 3 and 9 characters long, at an average of 7
+/// characters per word.
+///
+/// The wordlist is freely available under the CC BY 3.0 US license; see
+/// <https://www.eff.org/copyright> for more information about the copyright of the EFF.
+///
+/// [1]: https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases
+/// [2]: https://www.eff.org/files/2016/07/18/eff_large_wordlist.txt
 pub fn builtin_words() -> Vec<&'static str> {
     EFF_WORDLIST.lines().collect()
 }
 
+/// Provide statistics about a wordlist.
 pub struct WordlistStatistics {
+    /// The total number of words in the list.
     pub number_of_words: usize,
+    /// The length of the shortest word.
     pub min_word_length: usize,
+    /// The length of the longest word.
     pub max_word_length: usize,
+    /// The average length of a word.
     pub avg_word_length: f64,
+    /// The median of the length of all words.
     pub med_word_length: usize,
 }
 
@@ -44,6 +62,7 @@ fn median(x: &[usize]) -> usize {
 }
 
 impl WordlistStatistics {
+    /// Collect statistics for the given wordlist.
     pub fn from_words<'a, W, T>(words: W) -> WordlistStatistics
         where W: IntoIterator<Item = &'a T>,
               T: AsRef<str> + 'a

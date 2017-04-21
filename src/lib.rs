@@ -15,7 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+//! Generate XKCD 936 passwords.
+//!
+//! ![](http://imgs.xkcd.com/comics/password_strength.png)
+//!
+//! `generate_password` generates a single password from a wordlist.  A built-in wordlist is
+//! provided by the `wordlist` module.
+
 #![deny(warnings)]
+#![deny(missing_docs)]
 
 #![cfg_attr(feature="clippy", feature(plugin))]
 #![cfg_attr(feature="clippy", plugin(clippy))]
@@ -29,6 +37,10 @@ use rand::{Rng, sample};
 
 pub mod wordlist;
 
+/// Generate a single password from a wordlist.
+///
+/// Use the random generator `rng` to randomly draw from the wordlist `words` to generate a
+/// password of the given `length`, and concatenate the resulting words with the `separator`.
 pub fn generate_password<'a, R, W, T>(mut rng: &mut R,
                                       words: W,
                                       length: usize,
