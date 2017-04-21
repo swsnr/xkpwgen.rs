@@ -88,7 +88,7 @@ mod test {
     fn contains_no_duplicate_words() {
         let mut seen_words = HashSet::with_capacity(8000);
         let mut duplicate_words = HashSet::new();
-        for word in builtin_words().into_iter() {
+        for word in builtin_words() {
             if !seen_words.insert(word) {
                 duplicate_words.insert(word);
             }
@@ -105,7 +105,7 @@ mod test {
     #[test]
     fn contains_no_empty_words() {
         for word in builtin_words() {
-            assert!(word.len() > 0, "Got empty word");
+            assert!(!word.is_empty(), "Got empty word");
         }
     }
 

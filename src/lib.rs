@@ -58,16 +58,15 @@ mod test {
                 TestResult::discard()
             } else {
                 let password = generate(length, " ");
-                TestResult::from_bool(password.split(" ").count() == length)
+                TestResult::from_bool(password.split(' ').count() == length)
             }
         }
 
         fn uses_separator(length: usize, sep: String) -> TestResult {
-            if length == 0 || sep.len() == 0 {
-                TestResult::discard()
-            } else if sep.chars().all(|c| c.is_alphanumeric()) {
-                // Discard alphanumeric-only separators because these might appear in the chosen
-                // words and thus make the separator ambiguous, failing the test
+            if length == 0 || sep.is_empty() || sep.chars().all(|c| c.is_alphanumeric()) {
+                // Discard tests for empty passwords or separators, and for alphanumeric-only
+                // separators because these might appear in the chosen words, making the separator
+                // ambiguous and thus failing the test.
                 TestResult::discard()
             } else {
                 let password = generate(length, &sep);
@@ -81,7 +80,7 @@ mod test {
             } else {
                 let words= wordlist::builtin_words();
                 let password = generate_password(&mut thread_rng(), &words, length, " ");
-                TestResult::from_bool(password.split(" ").all(|w| words.contains(&w)))
+                TestResult::from_bool(password.split(' ').all(|w| words.contains(&w)))
             }
         }
 
