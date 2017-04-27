@@ -4,7 +4,7 @@ matrix:
   # Early fail/finish build if jobs fail
   fast_finish: true
   include:
-    - rust: '1.15.0' # base line for backwards compatibility
+    - rust: '1.17.0' # base line for backwards compatibility
     - rust: stable # to stay up to date
     - rust: beta # because the Rust team appreciates it
     # On nightly rust build with clippy enabled for linting
