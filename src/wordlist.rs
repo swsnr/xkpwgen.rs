@@ -21,7 +21,7 @@
 //! about a wordlist.
 
 // Include the wordlist in the binary
-static EFF_WORDLIST: &'static str = include_str!("eff_large_diceware_wordlist.txt");
+static EFF_WORDLIST: &str = include_str!("eff_large_diceware_wordlist.txt");
 
 /// Get the list of built-in words.
 ///
