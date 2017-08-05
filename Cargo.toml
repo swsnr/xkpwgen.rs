@@ -7,7 +7,7 @@ homepage = "https://github.com/lunaryorn/xkpwgen.rs"
 repository = "https://github.com/lunaryorn/xkpwgen.rs"
 keywords = ["xkcd", "936", "password"]
 categories = ["command-line-utilities", "text-processing"]
-license = "GPL-3.0"
+license = "MIT OR Apache-2.0"
 authors = ["Sebastian Wiesner <swiesner@lunaryorn.com>"]
 
 [package.metadata.release]
