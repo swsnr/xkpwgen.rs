@@ -41,14 +41,16 @@ pub mod wordlist;
 ///
 /// Use the random generator `rng` to randomly draw from the wordlist `words` to generate a
 /// password of the given `length`, and concatenate the resulting words with the `separator`.
-pub fn generate_password<'a, R, W, T>(mut rng: &mut R,
-                                      words: W,
-                                      length: usize,
-                                      separator: &str)
-                                      -> String
-    where R: Rng,
-          W: IntoIterator<Item = &'a T>,
-          T: AsRef<str> + 'a
+pub fn generate_password<'a, R, W, T>(
+    mut rng: &mut R,
+    words: W,
+    length: usize,
+    separator: &str,
+) -> String
+where
+    R: Rng,
+    W: IntoIterator<Item = &'a T>,
+    T: AsRef<str> + 'a,
 {
     sample(&mut rng, words.into_iter().map(AsRef::as_ref), length).join(separator)
 }

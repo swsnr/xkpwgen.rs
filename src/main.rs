@@ -65,12 +65,12 @@ impl<'a> Options<'a> {
         // Separator has a default value, so we can safely unwrap here!
         let separator = matches.value_of("separator").unwrap();
         Ok(Options {
-               print_wordlist: matches.is_present("words"),
-               length_of_password: length,
-               number_of_passwords: number,
-               colour_output: colour,
-               word_separator: separator,
-           })
+            print_wordlist: matches.is_present("words"),
+            length_of_password: length,
+            number_of_passwords: number,
+            colour_output: colour,
+            word_separator: separator,
+        })
     }
 
     fn colour_styles(&self) -> (Style, Style) {
@@ -80,7 +80,10 @@ impl<'a> Options<'a> {
             YesNoAuto::No => false,
         };
         if enable_colours {
-            (Style::new().fg(Colour::Cyan), Style::new().fg(Colour::Purple))
+            (
+                Style::new().fg(Colour::Cyan),
+                Style::new().fg(Colour::Purple),
+            )
         } else {
             (Style::new(), Style::new())
         }
@@ -90,52 +93,68 @@ impl<'a> Options<'a> {
 fn main() {
     let words = builtin_words();
     let stats = WordlistStatistics::from_words(&words);
-    let long_version = format!("{}\n
+    let long_version = format!(
+        "{}\n
 EFF long wordlist July 2016: {} words (lengths: min {}, max {}, avg {:.2}, median: {})
 
 {}",
-                               crate_version!(),
-                               stats.number_of_words,
-                               stats.min_word_length,
-                               stats.max_word_length,
-                               stats.avg_word_length,
-                               stats.med_word_length,
-                               LICENSE);
+        crate_version!(),
+        stats.number_of_words,
+        stats.min_word_length,
+        stats.max_word_length,
+        stats.avg_word_length,
+        stats.med_word_length,
+        LICENSE
+    );
     let matches = app_from_crate!()
-        .after_help("\
+        .after_help(
+            "\
 xkpwgen  copyright (C) 2017 Sebastian Wiesner <swiesner@lunaryorn.com>
-wordlist copyright (C) 2016 EFF <https://www.eff.org/copyright>")
+wordlist copyright (C) 2016 EFF <https://www.eff.org/copyright>",
+        )
         .long_version(long_version.as_str())
         .version_message("Print version and license information")
         .help_message("Print this message")
-        .arg(Arg::with_name("colour")
-                 .alias("color")
-                 .long("colour")
-                 .possible_values(&["yes", "no", "auto"])
-                 .default_value("auto")
-                 .help("Whether to enable or disable coloured output."))
-        .arg(Arg::with_name("separator")
-                 .short("s")
-                 .long("separator")
-                 .default_value(" ")
-                 .help("The separator between words in a password"))
-        .arg(Arg::with_name("number")
-                 .short("n")
-                 .long("number")
-                 .default_value("5")
-                 .help("The number of passwords to generate at once"))
-        .arg(Arg::with_name("length")
-                 .short("l")
-                 .long("length")
-                 .default_value("4")
-                 .help("The number of words in each password"))
-        .arg(Arg::with_name("words")
-                 .long("words")
-                 .help("Print the internal wordlist and exit"))
-        .settings(&[AppSettings::ColoredHelp,
-                    AppSettings::DontCollapseArgsInUsage,
-                    // Don't put flags and options in separate --help groups
-                    AppSettings::UnifiedHelpMessage])
+        .arg(
+            Arg::with_name("colour")
+                .alias("color")
+                .long("colour")
+                .possible_values(&["yes", "no", "auto"])
+                .default_value("auto")
+                .help("Whether to enable or disable coloured output."),
+        )
+        .arg(
+            Arg::with_name("separator")
+                .short("s")
+                .long("separator")
+                .default_value(" ")
+                .help("The separator between words in a password"),
+        )
+        .arg(
+            Arg::with_name("number")
+                .short("n")
+                .long("number")
+                .default_value("5")
+                .help("The number of passwords to generate at once"),
+        )
+        .arg(
+            Arg::with_name("length")
+                .short("l")
+                .long("length")
+                .default_value("4")
+                .help("The number of words in each password"),
+        )
+        .arg(Arg::with_name("words").long("words").help(
+            "Print the internal wordlist and exit",
+        ))
+        .settings(
+            &[
+                AppSettings::ColoredHelp,
+                AppSettings::DontCollapseArgsInUsage,
+                // Don't put flags and options in separate --help groups
+                AppSettings::UnifiedHelpMessage,
+            ],
+        )
         .get_matches();
 
     let options = Options::from_matches(&matches).unwrap_or_else(|e| e.exit());
@@ -152,10 +171,12 @@ wordlist copyright (C) 2016 EFF <https://www.eff.org/copyright>")
             } else {
                 odd_style
             };
-            let password = generate_password(&mut rng,
-                                             &words,
-                                             options.length_of_password,
-                                             options.word_separator);
+            let password = generate_password(
+                &mut rng,
+                &words,
+                options.length_of_password,
+                options.word_separator,
+            );
             println!("{}", style.paint(password));
         }
     }

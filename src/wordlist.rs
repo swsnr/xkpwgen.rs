@@ -64,8 +64,9 @@ fn median(x: &[usize]) -> usize {
 impl WordlistStatistics {
     /// Collect statistics for the given wordlist.
     pub fn from_words<'a, W, T>(words: W) -> WordlistStatistics
-        where W: IntoIterator<Item = &'a T>,
-              T: AsRef<str> + 'a
+    where
+        W: IntoIterator<Item = &'a T>,
+        T: AsRef<str> + 'a,
     {
         let mut lengths: Vec<usize> = words
             .into_iter()
@@ -113,12 +114,11 @@ mod test {
             }
         }
 
-        assert!(duplicate_words.is_empty(),
-                "Duplicate words found: {}",
-                duplicate_words
-                    .into_iter()
-                    .collect::<Vec<_>>()
-                    .join(" "));
+        assert!(
+            duplicate_words.is_empty(),
+            "Duplicate words found: {}",
+            duplicate_words.into_iter().collect::<Vec<_>>().join(" ")
+        );
     }
 
     #[test]
@@ -131,9 +131,11 @@ mod test {
     #[test]
     fn contains_no_words_with_whitespace() {
         for word in builtin_words() {
-            assert!(!word.contains(|c: char| c.is_whitespace()),
-                    "Word {} contained whitespace!",
-                    word);
+            assert!(
+                !word.contains(|c: char| c.is_whitespace()),
+                "Word {} contained whitespace!",
+                word
+            );
         }
     }
 }

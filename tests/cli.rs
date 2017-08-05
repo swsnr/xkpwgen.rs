@@ -51,16 +51,18 @@ fn run<S: AsRef<OsStr>>(args: &[S]) -> Result {
 
 fn assert_run<S: AsRef<OsStr>>(args: &[S]) -> Result {
     let result = run(args);
-    assert!(result.status.success(),
-            "xkpwgen failed with status {} and output:
+    assert!(
+        result.status.success(),
+        "xkpwgen failed with status {} and output:
 stdout:
 {}
 stderr:
 {}
 ",
-            result.status,
-            result.stdout,
-            result.stderr);
+        result.status,
+        result.stdout,
+        result.stderr
+    );
     result
 }
 
@@ -89,31 +91,43 @@ macro_rules! repeat_run {
 #[test]
 fn it_includes_eff_copyright_in_help() {
     let s = assert_run(&["--help"]).stdout;
-    assert!(s.contains("wordlist copyright (C) 2016 EFF <https://www.eff.org/copyright>"),
-            "EFF wordlist copyright missing from --help:
+    assert!(
+        s.contains(
+            "wordlist copyright (C) 2016 EFF <https://www.eff.org/copyright>",
+        ),
+        "EFF wordlist copyright missing from --help:
 {}",
-            s);
+        s
+    );
 }
 
 #[test]
 fn it_includes_license_and_warranty_in_version() {
     let s = assert_run(&["--version"]).stdout;
-    assert!(s.contains("wordlist license CC BY 3.0 US"),
-            "Wordlist license missing in output:
+    assert!(
+        s.contains("wordlist license CC BY 3.0 US"),
+        "Wordlist license missing in output:
 {}",
-            s);
-    assert!(s.contains("GNU GPL version 3 or later"),
-            "License name missing in output:
+        s
+    );
+    assert!(
+        s.contains("GNU GPL version 3 or later"),
+        "License name missing in output:
 {}",
-            s);
-    assert!(s.contains("<http://gnu.org/licenses/gpl.html>"),
-            "License URL missing in output:
+        s
+    );
+    assert!(
+        s.contains("<http://gnu.org/licenses/gpl.html>"),
+        "License URL missing in output:
 {}",
-            s);
-    assert!(s.contains("There is NO WARRANTY, to the extent permitted by law."),
-            "Warranty disclaimer missing in output:
+        s
+    );
+    assert!(
+        s.contains("There is NO WARRANTY, to the extent permitted by law."),
+        "Warranty disclaimer missing in output:
 {}",
-            s);
+        s
+    );
 }
 
 #[test]
@@ -180,12 +194,13 @@ fn it_generates_different_passwords() {
             }
         }
 
-        assert!(duplicate_passwords.is_empty(),
-                "Duplicate passwords found: {}",
-                duplicate_passwords
-                    .into_iter()
-                    .collect::<Vec<_>>()
-                    .join(", "));
+        assert!(
+            duplicate_passwords.is_empty(),
+            "Duplicate passwords found: {}",
+            duplicate_passwords.into_iter().collect::<Vec<_>>().join(
+                ", ",
+            )
+        );
 
     });
 }
@@ -193,6 +208,8 @@ fn it_generates_different_passwords() {
 #[test]
 fn it_uses_the_original_eff_wordlist() {
     let stdout = assert_run(&["--words"]).stdout;
-    assert_eq!(stdout.lines().collect::<Vec<_>>(),
-               wordlist::builtin_words());
+    assert_eq!(
+        stdout.lines().collect::<Vec<_>>(),
+        wordlist::builtin_words()
+    );
 }
