@@ -14,8 +14,7 @@ before_install:
   # Add Rust binaries to path
   - export PATH="$HOME/.cargo/bin:$PATH"
   # Install rustfmt if it does not already exist
-  - if [[ ! -x "$HOME/.cargo/bin/cargo-fmt" ]]; then cargo install rustfmt; fi
-  - cargo fmt -- --version
+  - cargo install --vers 0.9.0 rustfmt
 script:
   # Check formatting of sources
   - cargo fmt -- --write-mode=diff
