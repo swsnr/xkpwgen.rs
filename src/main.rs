@@ -19,8 +19,7 @@ extern crate rand;
 extern crate lazy_static;
 
 use clap::{AppSettings, Arg, ArgMatches};
-use rand::{Rng, sample};
-use rand::os::OsRng;
+use rand::{Rng, sample, thread_rng};
 
 
 /// Words to generate passwords from.
@@ -188,10 +187,9 @@ wordlist copyright (C) 2016 EFF <https://www.eff.org/copyright>",
 
     let options = Options::from_matches(&matches).unwrap_or_else(|e| e.exit());
 
-    let mut rng = OsRng::new().expect("Failed to initialize random generator");
     for _ in 0..options.number_of_passwords {
         let password = generate_password(
-            &mut rng,
+            &mut thread_rng(),
             get_words(options.list_of_words),
             options.length_of_password,
             options.word_separator,
