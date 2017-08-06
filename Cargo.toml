@@ -22,8 +22,6 @@ travis-ci = { repository = "lunaryorn/xkpwgen.rs" }
 [dependencies]
 rand = "^0.3"
 clap = "^2.21"
-ansi_term = "^0.9"
-atty = "^0.2"
 
 [dev-dependencies]
 quickcheck = "^0.4"

@@ -14,7 +14,6 @@
 
 #[macro_use]
 extern crate clap;
-extern crate atty;
 extern crate rand;
 
 use clap::{AppSettings, Arg, ArgMatches};
