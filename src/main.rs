@@ -16,7 +16,7 @@ extern crate xkpwgen;
 use clap::{AppSettings, Arg, ArgMatches};
 use rand::os::OsRng;
 use xkpwgen::generate_password;
-use xkpwgen::wordlist::{WordlistStatistics, builtin_words};
+use xkpwgen::wordlist::builtin_words;
 
 static LICENSE: &'static str = "\
 wordlist license CC BY 3.0 US: <http://creativecommons.org/licenses/by/3.0/us/>.
@@ -27,7 +27,6 @@ xkpwgen license either of
 at your option.  There is NO WARRANTY, to the extent permitted by law.";
 
 struct Options<'a> {
-    print_wordlist: bool,
     length_of_password: usize,
     number_of_passwords: usize,
     word_separator: &'a str,
@@ -40,7 +39,6 @@ impl<'a> Options<'a> {
         // Separator has a default value, so we can safely unwrap here!
         let separator = matches.value_of("separator").unwrap();
         Ok(Options {
-            print_wordlist: matches.is_present("words"),
             length_of_password: length,
             number_of_passwords: number,
             word_separator: separator,
@@ -50,18 +48,11 @@ impl<'a> Options<'a> {
 
 fn main() {
     let words = builtin_words();
-    let stats = WordlistStatistics::from_words(&words);
     let long_version = format!(
         "{}\n
-EFF long wordlist July 2016: {} words (lengths: min {}, max {}, avg {:.2}, median: {})
 
 {}",
         crate_version!(),
-        stats.number_of_words,
-        stats.min_word_length,
-        stats.max_word_length,
-        stats.avg_word_length,
-        stats.med_word_length,
         LICENSE
     );
     let matches = app_from_crate!()
@@ -94,9 +85,6 @@ wordlist copyright (C) 2016 EFF <https://www.eff.org/copyright>",
                 .default_value("4")
                 .help("The number of words in each password"),
         )
-        .arg(Arg::with_name("words").long("words").help(
-            "Print the internal wordlist and exit",
-        ))
         .settings(
             &[
                 AppSettings::DontCollapseArgsInUsage,
@@ -107,21 +95,16 @@ wordlist copyright (C) 2016 EFF <https://www.eff.org/copyright>",
         .get_matches();
 
     let options = Options::from_matches(&matches).unwrap_or_else(|e| e.exit());
-    if options.print_wordlist {
-        for word in builtin_words() {
-            println!("{}", word);
-        }
-    } else {
-        let mut rng = OsRng::new().expect("Failed to initialize random generator");
-        for _ in 0..options.number_of_passwords {
-            let password = generate_password(
-                &mut rng,
-                &words,
-                options.length_of_password,
-                options.word_separator,
-            );
-            println!("{}", password);
-        }
+
+    let mut rng = OsRng::new().expect("Failed to initialize random generator");
+    for _ in 0..options.number_of_passwords {
+        let password = generate_password(
+            &mut rng,
+            &words,
+            options.length_of_password,
+            options.word_separator,
+        );
+        println!("{}", password);
     }
 
 }
