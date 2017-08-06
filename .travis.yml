@@ -18,7 +18,6 @@ script:
   - cargo fmt -- --write-mode=diff
   - cargo build --verbose
   - cargo test --verbose
-  - if [[ "$TRAVIS_RUST_VERSION" == "nightly" ]]; then cargo bench --verbose $FEATURES; fi
 cache: cargo
 notifications:
   # Disable all email notifications; we have CCMenu
