@@ -21,11 +21,8 @@ travis-ci = { repository = "lunaryorn/xkpwgen.rs" }
 
 [dependencies]
 rand = "^0.3"
-clap = "^2.21"
+clap = "^2.26"
 lazy_static = "^0.2"
-
-[dev-dependencies]
-quickcheck = "^0.4"
 
 [features]
 default = []
