@@ -18,6 +18,7 @@ tag-message = "xkpwgen {{prefix}}-{{version}}"
 
 [badges]
 travis-ci = { repository = "lunaryorn/xkpwgen.rs" }
+maintenance = { status = "as-is" }
 
 [dependencies]
 rand = "^0.3"
