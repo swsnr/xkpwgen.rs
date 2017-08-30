@@ -22,6 +22,8 @@ travis-ci = { repository = "lunaryorn/xkpwgen.rs" }
 [dependencies]
 rand = "^0.3"
 clap = "^2.26"
+structopt-derive = "^0.1"
+structopt = "^0.1"
 lazy_static = "^0.2"
 
 [features]

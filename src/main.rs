@@ -20,12 +20,17 @@
 #![deny(warnings)]
 
 #[macro_use]
+extern crate structopt_derive;
+extern crate structopt;
+#[macro_use]
 extern crate clap;
 extern crate rand;
 #[macro_use]
 extern crate lazy_static;
 
+use clap::AppSettings;
 use rand::{Rng, sample, thread_rng};
+use structopt::StructOpt;
 
 
 /// Words to generate passwords from.
@@ -88,12 +93,7 @@ where
     sample(&mut rng, words.into_iter().map(AsRef::as_ref), length).join(separator)
 }
 
-/// CLI arguments to this tool.
-mod args {
-    use super::words;
-    use clap::{Result, AppSettings, Arg, ArgMatches};
-
-    static LICENSE: &'static str = "\
+static LICENSE: &'static str = "\
 xkpwgen license Apache License, Version 2.0: <http://www.apache.org/licenses/LICENSE-2.0>
 There is NO WARRANTY, to the extent permitted by law.
 
@@ -101,110 +101,58 @@ wordlists by Christopher Wellons, released to public domain:
 <https://github.com/skeeto/pokerware/tree/89a8fec541fdbe04fe15b5ad0d7986019240f741>
 ";
 
-    arg_enum! {
-        /// Which list of words to use.
-        #[derive(Clone, Copy, Debug)]
-        pub enum ListOfWords {
-            Slang,
-            Formal
-        }
-    }
+#[derive(StructOpt, Debug)]
+pub struct Options {
+    #[structopt(short = "l", long = "length", default_value = "4",
+                help = "The number of words per password")]
+    pub length_of_password: usize,
+    #[structopt(short = "n", long = "number", default_value = "5",
+                help = "The number of passwords to generate")]
+    pub number_of_passwords: usize,
+    #[structopt(short = "s", long = "separator", default_value = " ",
+                help = "The separator between words in a password")]
+    pub word_separator: String,
+    #[structopt(long = "slang", help = "Whether to use slang words")]
+    pub use_slang_words: bool,
+}
 
-    pub struct Options {
-        pub length_of_password: usize,
-        pub number_of_passwords: usize,
-        pub word_separator: String,
-        pub list_of_words: ListOfWords,
-    }
-
-    impl Options {
-        pub fn parse() -> Result<Options> {
-            let long_version = format!(
-                "{}\n
-
-{}",
-                crate_version!(),
-                LICENSE
-            );
-            let matches = app_from_crate!()
-                .after_help(
-                    "\
-xkpwgen  copyright (C) 2017 Sebastian Wiesner <swiesner@lunaryorn.com>
-wordlists copyright (C) 2017 Christopher Wellons",
-                )
-                .long_version(long_version.as_str())
-                .version_message("Print version and license information")
-                .help_message("Print this message")
-                .arg(
-                    Arg::with_name("separator")
-                        .short("s")
-                        .long("separator")
-                        .default_value(" ")
-                        .help("The separator between words in a password"),
-                )
-                .arg(
-                    Arg::with_name("number")
-                        .short("n")
-                        .long("number")
-                        .default_value("5")
-                        .help("The number of passwords to generate at once"),
-                )
-                .arg(
-                    Arg::with_name("length")
-                        .short("l")
-                        .long("length")
-                        .default_value("4")
-                        .help("The number of words in each password"),
-                )
-                .arg(
-                    Arg::with_name("list_of_words")
-                        .short("w")
-                        .long("--words")
-                        .possible_values(&ListOfWords::variants())
-                        .default_value(ListOfWords::variants()[0])
-                        .help("The list of words to use to generate a password"),
-                )
-                .settings(
-                    &[
-                        AppSettings::DontCollapseArgsInUsage,
-                        // Don't put flags and options in separate --help groups
-                        AppSettings::UnifiedHelpMessage,
-                    ],
-                )
-                .get_matches();
-
-            Options::from_matches(&matches)
-        }
-
-        /// Extract our options from matched CLI arguments.
-        fn from_matches<'a>(matches: &'a ArgMatches<'a>) -> Result<Options> {
-            let length = value_t!(matches.value_of("length"), usize)?;
-            let number = value_t!(matches.value_of("number"), usize)?;
-            let list_of_words = value_t!(matches.value_of("list_of_words"), ListOfWords)?;
-            let separator = value_t!(matches.value_of("separator"), String)?;
-            Ok(Options {
-                length_of_password: length,
-                number_of_passwords: number,
-                word_separator: separator,
-                list_of_words: list_of_words,
-            })
-        }
-
-        /// Get the words selected by CLI options.
-        pub fn words<'a>(&self) -> &'a Vec<&'static str> {
-            match self.list_of_words {
-                ListOfWords::Slang => &*words::SLANG,
-                ListOfWords::Formal => &*words::FORMAL,
-            }
+impl Options {
+    /// Get the words selected by CLI options.
+    pub fn words<'a>(&self) -> &'a Vec<&'static str> {
+        if self.use_slang_words {
+            &*words::SLANG
+        } else {
+            &*words::FORMAL
         }
     }
 }
 
-
 fn main() {
-    use args::Options;
-
-    let options = Options::parse().unwrap_or_else(|e| e.exit());
+    let long_version = format!(
+        "{}\n
+{}",
+        crate_version!(),
+        LICENSE
+    );
+    let options = Options::from_clap(
+        Options::clap()
+            .after_help(
+                "\
+xkpwgen copyright (C) 2017 Sebastian Wiesner <swiesner@lunaryorn.com>
+wordlists copyright (C) 2017 Christopher Wellons",
+            )
+            .long_version(long_version.as_str())
+            .version_message("Print version and license information")
+            .help_message("Print this message")
+            .settings(
+                &[
+                    AppSettings::DontCollapseArgsInUsage,
+                    // Don't put flags and options in separate --help groups
+                    AppSettings::UnifiedHelpMessage,
+                ],
+            )
+            .get_matches(),
+    );
 
     for _ in 0..options.number_of_passwords {
         let password = generate_password(
