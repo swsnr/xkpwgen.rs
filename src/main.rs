@@ -1,9 +1,16 @@
-// Copyright 2017 Sebastian Wiesner
+//    Copyright 2017 Sebastian Wiesner <swiesner@lunaryorn.com>
 //
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// http://apache.org/licenses/LICENSE-2.0> or the MIT license <LICENSE-MIT or
-// http://opensource.org/licenses/MIT>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
 
 //! Generate XKCD 936 passwords.
 //!
@@ -89,10 +96,9 @@ mod args {
     static LICENSE: &'static str = "\
 wordlist license CC BY 3.0 US: <http://creativecommons.org/licenses/by/3.0/us/>.
 
-xkpwgen license either of
-* Apache License, Version 2.0, <http://www.apache.org/licenses/LICENSE-2.0>
-* MIT license, <http://opensource.org/licenses/MIT>
-at your option.  There is NO WARRANTY, to the extent permitted by law.";
+xkpwgen license Apache License, Version 2.0: <http://www.apache.org/licenses/LICENSE-2.0>
+
+There is NO WARRANTY, to the extent permitted by law.";
 
     arg_enum! {
         /// Which list of words to use.
