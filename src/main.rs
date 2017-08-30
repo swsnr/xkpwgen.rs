@@ -94,11 +94,12 @@ mod args {
     use clap::{Result, AppSettings, Arg, ArgMatches};
 
     static LICENSE: &'static str = "\
-wordlist license CC BY 3.0 US: <http://creativecommons.org/licenses/by/3.0/us/>.
-
 xkpwgen license Apache License, Version 2.0: <http://www.apache.org/licenses/LICENSE-2.0>
+There is NO WARRANTY, to the extent permitted by law.
 
-There is NO WARRANTY, to the extent permitted by law.";
+wordlists by Christopher Wellons, released to public domain:
+<https://github.com/skeeto/pokerware/tree/89a8fec541fdbe04fe15b5ad0d7986019240f741>
+";
 
     arg_enum! {
         /// Which list of words to use.
@@ -129,7 +130,7 @@ There is NO WARRANTY, to the extent permitted by law.";
                 .after_help(
                     "\
 xkpwgen  copyright (C) 2017 Sebastian Wiesner <swiesner@lunaryorn.com>
-wordlist copyright (C) 2016 EFF <https://www.eff.org/copyright>",
+wordlists copyright (C) 2017 Christopher Wellons",
                 )
                 .long_version(long_version.as_str())
                 .version_message("Print version and license information")
@@ -198,7 +199,6 @@ wordlist copyright (C) 2016 EFF <https://www.eff.org/copyright>",
         }
     }
 }
-
 
 
 fn main() {

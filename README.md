@@ -15,20 +15,17 @@ Generate [XKCD 936](https://xkcd.com/936/) passwords:
 $ cargo install xkpwgen
 ```
 
-Building this tool requires network access because the build script fetches the
-wordlist from the EFF (see below).
-
 ## Use
 
 Invoke `xkpwgen` to generate five passwords:
 
 ```console
 $ xkpwgen
-veneering hazing aging diner
-hypertext repose salvaging barometer
-quote parchment boxy hurt
-gift womanhood step mammary
-october hemstitch darkness agony
+gains spate rush dine
+stool added split skirt
+venom foul slack rubs
+leer merit ting slate
+cribs flock stars help
 ```
 
 Use `-l` to change the length of passwords, and `-n` to change the number of
@@ -36,36 +33,28 @@ passwords:
 
 ```console
 $ xkpwgen -l 10 -n 2
-paralyses unawake both wish gawk islamist taco charity shorts barmaid
-submersed tackle font gentile navy same boxing tartness trodden confined
+goals tray guy mill mint cores focus kudos mares beady
+ins hark sodas omit glove goofs spurt mash gait beer
 ```
-
-`xkpwgen --words` prints the list of words used in passwords and exists.
 
 See `xkpwgen --help` for more information.
 
-## Wordlist
+## Words
 
-xkpwgen includes the [EFF long wordlist][1] which contains 7776 common English
-words between three and nine characters in length, at an average of seven
-characters per word.
+xkpwgen uses the [pokerware wordlists][1] by Christopher Wellons.  His [blog
+post][2] explains in detail how he collected these wordlists.  In essence the
+default “formal” wordlist comes from formal publications whereas the alternative
+“slang” wordlist collects popular words from Reddit comments.
 
-The wordlist is provided free of charge by the EFF and may be freely distributed
-under the [CC BY 3.0 US license](https://www.eff.org/copyright).  If you like
-xkpwgen please consider [supporting the EFF](https://supporters.eff.org)!
-
-[1]: https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases
+[1]: https://github.com/skeeto/pokerware
+[2]: http://nullprogram.com/blog/2017/07/27/
 
 ## License
 
-Wordlist copyright (C) 2016 EFF
+Wordlist copyright (C) 2017 Christopher Wellons, released to [public
+domain][pd].
 
-The wordlist used by xkpwgen may be freely distributed at will under the
-[Creative Commons Attribution License][cc-by] (CC BY 3.0 US).  See
-<https://www.eff.org/copyright> for more information about the EFF's copyright
-policy.
-
-[cc-by]: http://creativecommons.org/licenses/by/3.0/us/
+[pd]: https://github.com/skeeto/pokerware/tree/89a8fec541fdbe04fe15b5ad0d7986019240f741
 
 ----
 
