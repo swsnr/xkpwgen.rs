@@ -79,7 +79,7 @@ mod words {
 ///
 /// Use the random generator `rng` to randomly draw from the wordlist `words` to generate a
 /// password of the given `length`, and concatenate the resulting words with the `separator`.
-pub fn generate_password<'a, R, W, T>(
+fn generate_password<'a, R, W, T>(
     mut rng: &mut R,
     words: W,
     length: usize,
@@ -102,23 +102,23 @@ wordlists by Christopher Wellons, released to public domain:
 ";
 
 #[derive(StructOpt, Debug)]
-pub struct Options {
+struct Options {
     #[structopt(short = "l", long = "length", default_value = "4",
                 help = "The number of words per password")]
-    pub length_of_password: usize,
+    length_of_password: usize,
     #[structopt(short = "n", long = "number", default_value = "5",
                 help = "The number of passwords to generate")]
-    pub number_of_passwords: usize,
+    number_of_passwords: usize,
     #[structopt(short = "s", long = "separator", default_value = " ",
                 help = "The separator between words in a password")]
-    pub word_separator: String,
+    word_separator: String,
     #[structopt(long = "slang", help = "Whether to use slang words")]
-    pub use_slang_words: bool,
+    use_slang_words: bool,
 }
 
 impl Options {
     /// Get the words selected by CLI options.
-    pub fn words<'a>(&self) -> &'a Vec<&'static str> {
+    fn words<'a>(&self) -> &'a Vec<&'static str> {
         if self.use_slang_words {
             &*words::SLANG
         } else {
