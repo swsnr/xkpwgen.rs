@@ -1,4 +1,4 @@
-//    Copyright 2017 Sebastian Wiesner <swiesner@lunaryorn.com>
+//    Copyright 2017 Sebastian Wiesner <sebastian@swsnr.de>
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
@@ -138,7 +138,7 @@ fn main() {
         Options::clap()
             .after_help(
                 "\
-xkpwgen copyright (C) 2017 Sebastian Wiesner <swiesner@lunaryorn.com>
+xkpwgen copyright (C) 2017 Sebastian Wiesner <sebastian@swsnr.de>
 wordlists copyright (C) 2017 Christopher Wellons",
             )
             .long_version(long_version.as_str())
