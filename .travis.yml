@@ -4,15 +4,15 @@ matrix:
   # Early fail/finish build if jobs fail
   fast_finish: true
   include:
-    - rust: '1.17.0' # base line for backwards compatibility
+    - rust: '1.22.1' # base line for backwards compatibility
     - rust: stable # to stay up to date
     - rust: beta # because the Rust team appreciates it
     - rust: nightly
 before_install:
   # Add Rust binaries to path
   - export PATH="$HOME/.cargo/bin:$PATH"
-  # Install rustfmt if it does not already exist
-  - cargo install --force --vers 0.9.0 rustfmt
+  # Add rustfmt
+  - rustup component add rustfmt-preview
 script:
   # Check formatting of sources
   - cargo fmt -- --write-mode=diff
