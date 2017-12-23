@@ -11,11 +11,7 @@ matrix:
 before_install:
   # Add Rust binaries to path
   - export PATH="$HOME/.cargo/bin:$PATH"
-  # Add rustfmt
-  - rustup component add rustfmt-preview
 script:
-  # Check formatting of sources
-  - cargo fmt -- --write-mode=diff
   - cargo build --verbose
   - cargo test --verbose
 cache: cargo
