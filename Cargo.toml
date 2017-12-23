@@ -21,11 +21,11 @@ travis-ci = { repository = "lunaryorn/xkpwgen.rs" }
 maintenance = { status = "as-is" }
 
 [dependencies]
-rand = "^0.3"
-clap = "^2.26"
+rand = "^0.4"
+clap = "^2.29"
 structopt-derive = "^0.1"
 structopt = "^0.1"
-lazy_static = "^0.2"
+lazy_static = "^1.0"
 
 [features]
 default = []

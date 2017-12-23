@@ -20,16 +20,17 @@
 #![deny(warnings)]
 
 #[macro_use]
-extern crate structopt_derive;
-extern crate structopt;
-#[macro_use]
 extern crate clap;
-extern crate rand;
 #[macro_use]
 extern crate lazy_static;
+extern crate rand;
+extern crate structopt;
+#[macro_use]
+extern crate structopt_derive;
 
 use clap::AppSettings;
-use rand::{Rng, sample, thread_rng};
+use rand::{thread_rng, Rng};
+use rand::seq::sample_iter;
 use structopt::StructOpt;
 
 
@@ -90,7 +91,9 @@ where
     W: IntoIterator<Item = &'a T>,
     T: AsRef<str> + 'a,
 {
-    sample(&mut rng, words.into_iter().map(AsRef::as_ref), length).join(separator)
+    sample_iter(&mut rng, words.into_iter().map(AsRef::as_ref), length)
+        .expect("Too few words")
+        .join(separator)
 }
 
 static LICENSE: &'static str = "\
@@ -112,8 +115,7 @@ struct Options {
     #[structopt(short = "s", long = "separator", default_value = " ",
                 help = "The separator between words in a password")]
     word_separator: String,
-    #[structopt(long = "slang", help = "Whether to use slang words")]
-    use_slang_words: bool,
+    #[structopt(long = "slang", help = "Whether to use slang words")] use_slang_words: bool,
 }
 
 impl Options {
@@ -144,13 +146,11 @@ wordlists copyright (C) 2017 Christopher Wellons",
             .long_version(long_version.as_str())
             .version_message("Print version and license information")
             .help_message("Print this message")
-            .settings(
-                &[
-                    AppSettings::DontCollapseArgsInUsage,
-                    // Don't put flags and options in separate --help groups
-                    AppSettings::UnifiedHelpMessage,
-                ],
-            )
+            .settings(&[
+                AppSettings::DontCollapseArgsInUsage,
+                // Don't put flags and options in separate --help groups
+                AppSettings::UnifiedHelpMessage,
+            ])
             .get_matches(),
     );
 
