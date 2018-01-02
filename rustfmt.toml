@@ -1,5 +1,0 @@
-reorder_imports = true
-take_source_hints = false
-report_todo = "Always"
-report_fixme = "Always"
-write_mode = "Overwrite"
