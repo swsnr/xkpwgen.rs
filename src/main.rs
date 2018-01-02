@@ -33,7 +33,6 @@ use rand::{thread_rng, Rng};
 use rand::seq::sample_iter;
 use structopt::StructOpt;
 
-
 /// Words to generate passwords from.
 ///
 /// We use the [pokerware words][1] from  by Christopher Wellons which he released
