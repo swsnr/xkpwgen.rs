@@ -1,17 +1,22 @@
 sudo: false
 language: rust
-matrix:
-  # Early fail/finish build if jobs fail
-  fast_finish: true
+rust:
+  - '1.22.1' # base line for backwards compatibility
+  - stable # to stay up to date
+  - beta # because the Rust team appreciates it
+  - nightly
+stages:
+  - formatting
+  - test
+jobs:
   include:
-    - rust: '1.22.1' # base line for backwards compatibility
-    - rust: stable # to stay up to date
-    - rust: beta # because the Rust team appreciates it
-    - rust: nightly
-before_install:
-  # Add Rust binaries to path
-  - export PATH="$HOME/.cargo/bin:$PATH"
-script:
-  - cargo build --verbose
-  - cargo test --verbose
-cache: cargo
+    # Check formatting
+    - stage: formatting
+      before_install: rustup component add rustfmt-preview
+      script: cargo fmt -- --write-mode=diff
+      rust: nightly
+    - stage: test
+      script:
+        - cargo build --verbose
+        - cargo test --verbose
+      cache: cargo
