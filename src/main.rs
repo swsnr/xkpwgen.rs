@@ -114,7 +114,8 @@ struct Options {
     #[structopt(short = "s", long = "separator", default_value = " ",
                 help = "The separator between words in a password")]
     word_separator: String,
-    #[structopt(long = "slang", help = "Whether to use slang words")] use_slang_words: bool,
+    #[structopt(long = "slang", help = "Whether to use slang words")]
+    use_slang_words: bool,
 }
 
 impl Options {
