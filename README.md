@@ -8,7 +8,9 @@
 
 Generate [XKCD 936](https://xkcd.com/936/) passwords:
 
-![](http://imgs.xkcd.com/comics/password_strength.png)
+![Password Strength][936]
+
+[936]: http://imgs.xkcd.com/comics/password_strength.png "To anyone who understands information theory and security and is in an infuriating argument with someone who does not (possibly involving mixed case), I sincerely apologize."
 
 ## Install
 
