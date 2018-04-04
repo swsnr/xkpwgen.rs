@@ -136,23 +136,22 @@ fn main() {
         crate_version!(),
         LICENSE
     );
-    let options = Options::from_clap(
-        Options::clap()
-            .after_help(
-                "\
+    let matches = Options::clap()
+        .after_help(
+            "\
 xkpwgen copyright (C) 2017 Sebastian Wiesner <sebastian@swsnr.de>
 wordlists copyright (C) 2017 Christopher Wellons",
-            )
-            .long_version(long_version.as_str())
-            .version_message("Print version and license information")
-            .help_message("Print this message")
-            .settings(&[
-                AppSettings::DontCollapseArgsInUsage,
-                // Don't put flags and options in separate --help groups
-                AppSettings::UnifiedHelpMessage,
-            ])
-            .get_matches(),
-    );
+        )
+        .long_version(long_version.as_str())
+        .version_message("Print version and license information")
+        .help_message("Print this message")
+        .settings(&[
+            AppSettings::DontCollapseArgsInUsage,
+            // Don't put flags and options in separate --help groups
+            AppSettings::UnifiedHelpMessage,
+        ])
+        .get_matches();
+    let options = Options::from_clap(&matches);
 
     for _ in 0..options.number_of_passwords {
         let password = generate_password(
