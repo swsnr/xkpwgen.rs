@@ -29,8 +29,8 @@ extern crate structopt;
 extern crate structopt_derive;
 
 use clap::AppSettings;
-use rand::{thread_rng, Rng};
 use rand::seq::sample_iter;
+use rand::{thread_rng, Rng};
 use structopt::StructOpt;
 
 /// Words to generate passwords from.
