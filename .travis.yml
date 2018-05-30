@@ -1,14 +1,11 @@
 sudo: false
 language: rust
-rust:
-  - '1.22.1' # base line for backwards compatibility
-  - stable # to stay up to date
-  - beta # because the Rust team appreciates it
-  - nightly
+cache: cargo
+
 script:
   - cargo build --verbose
   - cargo test --verbose
-cache: cargo
+
 # Check formatting before running tests
 stages:
   - formatting
@@ -18,10 +15,35 @@ jobs:
   include:
     # Add an additional stage to check formatting
     - stage: formatting
+      os: linux
+      rust: stable
       before_install: rustup component add rustfmt-preview
       script: cargo fmt -- --write-mode=diff
+
+    # Base line for backwards compatibility
+    - stage: test
+      os: linux
+      rust: '1.23.0'
+    # Our target Rust version
+    - stage: test
+      os: linux
       rust: stable
-    - stage: lint
-      before_install: cargo install --force clippy
-      script: cargo clippy
+    # Catch regressions in beta and nightly
+    - stage: test
+      os: linux
+      rust: beta
+    - stage: test
+      os: linux
       rust: nightly
+
+    # Run clippy after testing, with a pinned clippy version and a compatible
+    # nightly snapshot
+    - stage: lint
+      os: linux
+      # Use a nightly version on which clippy builds successfully.
+      rust: nightly-2018-05-29
+      # Put clippy version in environment to make it appear in Travis CI UI and
+      # to invalidate build caches when we update the clippy version
+      env: CLIPPY_VERSION="0.0.206"
+      before_install: cargo install clippy --version "$CLIPPY_VERSION" || echo "clippy already installed"
+      script: cargo clippy
