@@ -105,14 +105,23 @@ wordlists by Christopher Wellons, released to public domain:
 
 #[derive(StructOpt, Debug)]
 struct Options {
-    #[structopt(short = "l", long = "length", default_value = "4",
-                help = "The number of words per password")]
+    #[structopt(
+        short = "l", long = "length", default_value = "4", help = "The number of words per password"
+    )]
     length_of_password: usize,
-    #[structopt(short = "n", long = "number", default_value = "5",
-                help = "The number of passwords to generate")]
+    #[structopt(
+        short = "n",
+        long = "number",
+        default_value = "5",
+        help = "The number of passwords to generate"
+    )]
     number_of_passwords: usize,
-    #[structopt(short = "s", long = "separator", default_value = " ",
-                help = "The separator between words in a password")]
+    #[structopt(
+        short = "s",
+        long = "separator",
+        default_value = " ",
+        help = "The separator between words in a password"
+    )]
     word_separator: String,
     #[structopt(long = "slang", help = "Whether to use slang words")]
     use_slang_words: bool,
