@@ -106,7 +106,10 @@ wordlists by Christopher Wellons, released to public domain:
 #[derive(StructOpt, Debug)]
 struct Options {
     #[structopt(
-        short = "l", long = "length", default_value = "4", help = "The number of words per password"
+        short = "l",
+        long = "length",
+        default_value = "4",
+        help = "The number of words per password"
     )]
     length_of_password: usize,
     #[structopt(
@@ -150,16 +153,14 @@ fn main() {
             "\
 xkpwgen copyright (C) 2017 Sebastian Wiesner <sebastian@swsnr.de>
 wordlists copyright (C) 2017 Christopher Wellons",
-        )
-        .long_version(long_version.as_str())
+        ).long_version(long_version.as_str())
         .version_message("Print version and license information")
         .help_message("Print this message")
         .settings(&[
             AppSettings::DontCollapseArgsInUsage,
             // Don't put flags and options in separate --help groups
             AppSettings::UnifiedHelpMessage,
-        ])
-        .get_matches();
+        ]).get_matches();
     let options = Options::from_clap(&matches);
 
     for _ in 0..options.number_of_passwords {
