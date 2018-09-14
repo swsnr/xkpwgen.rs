@@ -18,7 +18,7 @@ jobs:
       os: linux
       rust: stable
       before_install: rustup component add rustfmt-preview
-      script: cargo fmt -- --write-mode=diff
+      script: cargo fmt -- --check
 
     # Base line for backwards compatibility
     - stage: test
@@ -36,10 +36,9 @@ jobs:
       os: linux
       rust: nightly
 
-    # Run clippy after testing, with a pinned clippy version and a compatible
-    # nightly snapshot
+    # Run clippy after testing
     - stage: lint
       os: linux
-      rust: nightly
+      rust: stable
       before_install: rustup component add clippy-preview
       script: cargo clippy
