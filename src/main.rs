@@ -115,7 +115,7 @@ struct Options {
     #[structopt(
         short = "n",
         long = "number",
-        default_value = "5",
+        default_value = "10",
         help = "The number of passwords to generate"
     )]
     number_of_passwords: usize,
