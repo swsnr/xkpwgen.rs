@@ -25,7 +25,6 @@ extern crate clap;
 extern crate lazy_static;
 extern crate rand;
 extern crate structopt;
-#[macro_use]
 extern crate structopt_derive;
 
 use clap::AppSettings;
