@@ -21,11 +21,7 @@ jobs:
       before_install: rustup component add rustfmt-preview
       script: cargo fmt -- --check
 
-    # Base line for backwards compatibility
-    - stage: test
-      os: linux
-      rust: '1.23.0'
-    # Our target Rust version
+      # Our target Rust version
     - stage: test
       os: linux
       rust: stable
