@@ -1,4 +1,3 @@
-sudo: false
 language: rust
 # Don't cache; rust caches quickly grow so large in size that building
 # everything anew is often faster than unpacking and repacking the cache.
