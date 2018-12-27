@@ -19,17 +19,10 @@
 
 #![deny(warnings)]
 
-#[macro_use]
-extern crate clap;
-#[macro_use]
-extern crate lazy_static;
-extern crate rand;
-extern crate structopt;
-extern crate structopt_derive;
-
-use clap::AppSettings;
+use clap::{crate_version, AppSettings};
 use rand::seq::sample_iter;
 use rand::{thread_rng, Rng};
+use structopt;
 use structopt::StructOpt;
 
 /// Words to generate passwords from.
@@ -43,6 +36,8 @@ use structopt::StructOpt;
 /// [1]: https://github.com/skeeto/pokerware
 /// [2]: http://nullprogram.com/blog/2017/07/27/
 mod words {
+    use lazy_static::lazy_static;
+
     lazy_static! {
         /// Formal words.
         ///
