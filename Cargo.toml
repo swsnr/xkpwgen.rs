@@ -9,6 +9,7 @@ keywords = ["xkcd", "936", "password"]
 categories = ["command-line-utilities", "text-processing"]
 license = "Apache-2.0"
 authors = ["Sebastian Wiesner <sebastian@swsnr.de>"]
+edition = "2018"
 
 [package.metadata.release]
 sign-commit = true
