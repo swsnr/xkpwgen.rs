@@ -22,7 +22,7 @@ travis-ci = { repository = "lunaryorn/xkpwgen.rs" }
 maintenance = { status = "as-is" }
 
 [dependencies]
-rand = "^0.5"
+rand = "^0.6"
 clap = "^2.29"
 structopt-derive = "^0.2"
 structopt = "^0.2"

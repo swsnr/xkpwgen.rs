@@ -20,7 +20,7 @@
 #![deny(warnings)]
 
 use clap::{crate_version, AppSettings};
-use rand::seq::sample_iter;
+use rand::seq::IteratorRandom;
 use rand::{thread_rng, Rng};
 use structopt;
 use structopt::StructOpt;
@@ -84,8 +84,10 @@ where
     W: IntoIterator<Item = &'a T>,
     T: AsRef<str> + 'a,
 {
-    sample_iter(&mut rng, words.into_iter().map(AsRef::as_ref), length)
-        .expect("Too few words")
+    words
+        .into_iter()
+        .map(AsRef::as_ref)
+        .choose_multiple(&mut rng, length)
         .join(separator)
 }
 
