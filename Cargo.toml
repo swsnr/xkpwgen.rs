@@ -17,9 +17,6 @@ pre-release-commit-message = "Release {{version}}"
 pro-release-commit-message = "Set version to {{version}}"
 tag-message = "xkpwgen {{prefix}}-{{version}}"
 
-[badges]
-maintenance = { status = "as-is" }
-
 [dependencies]
 rand = "^0.6"
 clap = "^2.29"
