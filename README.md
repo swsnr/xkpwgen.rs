@@ -2,8 +2,8 @@
 
 [crates-badge]: https://img.shields.io/crates/v/xkpwgen.svg
 [crates]: https://crates.io/crates/xkpwgen
-[travis-badge]: https://img.shields.io/travis/lunaryorn/xkpwgen.rs/master.svg
-[travis]: https://travis-ci.org/lunaryorn/xkpwgen.rs
+[travis-badge]: https://travis-ci.com/lunaryorn/xkpwgen.rs.svg?branch=master
+[travis]: https://travis-ci.com/lunaryorn/xkpwgen.rs
 [maintenance-badge]: https://img.shields.io/badge/maintenace-as--is-yellow.svg
 
 Generate [XKCD 936](https://xkcd.com/936/) passwords:
