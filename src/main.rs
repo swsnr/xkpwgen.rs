@@ -60,7 +60,7 @@ static LICENSE: &'static str = "\
 xkpwgen license Apache License, Version 2.0: <http://www.apache.org/licenses/LICENSE-2.0>
 There is NO WARRANTY, to the extent permitted by law.
 
-wordlists by Christopher Wellons, released to public domain:
+wordlist by Christopher Wellons, released to public domain:
 <https://github.com/skeeto/pokerware/tree/89a8fec541fdbe04fe15b5ad0d7986019240f741>
 ";
 
