@@ -32,7 +32,7 @@ use structopt::StructOpt;
 /// Wordlists were released to the public domain.
 ///
 /// See also <http://nullprogram.com/blog/2017/07/27/>.
-const WORDS: &'static str = include_str!("words.txt");
+const WORDS: &str = include_str!("words.txt");
 
 /// Generate a single password from a wordlist.
 ///
