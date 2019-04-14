@@ -12,7 +12,6 @@ authors = ["Sebastian Wiesner <sebastian@swsnr.de>"]
 edition = "2018"
 
 [package.metadata.release]
-sign-commit = true
 pre-release-commit-message = "Release {{version}}"
 pro-release-commit-message = "Set version to {{version}}"
 tag-message = "xkpwgen {{prefix}}-{{version}}"
