@@ -17,7 +17,7 @@ pro-release-commit-message = "Set version to {{version}}"
 tag-message = "xkpwgen {{prefix}}-{{version}}"
 
 [dependencies]
-rand = "^0.6"
+rand = "^0.7"
 clap = "^2.33"
 structopt-derive = "^0.2"
 structopt = "^0.2"
