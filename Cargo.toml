@@ -19,7 +19,7 @@ tag-message = "xkpwgen {{prefix}}-{{version}}"
 [dependencies]
 rand = "^0.7"
 clap = "^2.33"
-structopt-derive = "^0.2"
+structopt-derive = "^0.3"
 structopt = "^0.2"
 lazy_static = "^1.4"
 
