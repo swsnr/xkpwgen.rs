@@ -11,11 +11,6 @@ license = "Apache-2.0"
 authors = ["Sebastian Wiesner <sebastian@swsnr.de>"]
 edition = "2018"
 
-[package.metadata.release]
-pre-release-commit-message = "Release {{version}}"
-pro-release-commit-message = "Set version to {{version}}"
-tag-message = "xkpwgen {{prefix}}-{{version}}"
-
 [dependencies]
 rand = "^0.7"
 clap = "^2.33"
