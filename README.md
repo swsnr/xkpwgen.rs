@@ -41,8 +41,8 @@ See `xkpwgen --help` for more information.
 
 ## Words
 
-xkpwgen uses the [pokerware wordlists][1] by Christopher Wellons.  His [blog
-post][2] explains in detail how he collected these wordlists.  In essence the
+xkpwgen uses the [pokerware wordlists][1] by Christopher Wellons. His [blog
+post][2] explains in detail how he collected these wordlists. In essence the
 default “formal” wordlist comes from formal publications whereas the alternative
 “slang” wordlist collects popular words from Reddit comments.
 
@@ -58,6 +58,6 @@ domain][pd].
 
 ----
 
-xkpwgen copyright (C) 2017  Sebastian Wiesner
+xkpwgen copyright (C) 2017–2019 Sebastian Wiesner
 
 xkpwgen is licensed under [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
