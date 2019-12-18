@@ -1,10 +1,8 @@
-# xkpwgen [![Current release][crates-badge]][crates] [![Build status][travis-badge]][travis]
+# xkpwgen [![Current release][crates-badge]][crates]
 
 [crates-badge]: https://img.shields.io/crates/v/xkpwgen.svg
 [crates]: https://crates.io/crates/xkpwgen
-[travis-badge]: https://travis-ci.com/lunaryorn/xkpwgen.rs.svg?branch=master
-[travis]: https://travis-ci.com/lunaryorn/xkpwgen.rs
-maint
+
 Generate [XKCD 936](https://xkcd.com/936/) passwords:
 
 ![Password Strength][936]

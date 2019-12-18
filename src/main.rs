@@ -17,7 +17,7 @@
 //! ![](http://imgs.xkcd.com/comics/password_strength.png)
 //!
 
-#![deny(warnings)]
+#![deny(warnings, clippy::all)]
 
 use clap::{crate_version, AppSettings};
 use rand::seq::IteratorRandom;
