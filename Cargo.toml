@@ -14,7 +14,7 @@ edition = "2018"
 [dependencies]
 rand = "^0.7"
 clap = "^2.33"
-structopt-derive = "^0.4"
+structopt = "^0.3"
 lazy_static = "^1.4"
 
 [features]
