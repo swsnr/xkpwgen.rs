@@ -1,7 +1,4 @@
-# xkpwgen [![Current release][crates-badge]][crates]
-
-[crates-badge]: https://img.shields.io/crates/v/xkpwgen.svg
-[crates]: https://crates.io/crates/xkpwgen
+# xkpwgen
 
 Generate [XKCD 936](https://xkcd.com/936/) passwords:
 
