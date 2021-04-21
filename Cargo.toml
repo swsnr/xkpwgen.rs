@@ -12,7 +12,7 @@ authors = ["Sebastian Wiesner <sebastian@swsnr.de>"]
 edition = "2018"
 
 [dependencies]
-rand = "^0.7"
+rand = "^0.8"
 clap = "^2.33"
 structopt = "^0.3"
 lazy_static = "^1.4"
