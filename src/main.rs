@@ -22,7 +22,6 @@
 use clap::{crate_version, AppSettings};
 use rand::seq::IteratorRandom;
 use rand::{thread_rng, Rng};
-use structopt;
 use structopt::StructOpt;
 
 /// Words used by xkpwgen.
