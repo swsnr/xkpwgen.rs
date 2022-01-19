@@ -1,6 +1,6 @@
 [package]
 name = "xkpwgen"
-version = "0.8.1"
+version = "1.0.0"
 description = "Generate XKCD 936 passwords"
 readme = "README.md"
 homepage = "https://codeberg.org/flausch/xkpwgen.rs"
