@@ -19,10 +19,9 @@
 
 #![deny(warnings, clippy::all)]
 
-use clap::{crate_version, AppSettings};
+use clap::{AppSettings, FromArgMatches, IntoApp, StructOpt};
 use rand::seq::IteratorRandom;
 use rand::{thread_rng, Rng};
-use structopt::StructOpt;
 
 /// Words used by xkpwgen.
 ///
@@ -66,21 +65,21 @@ wordlist by Christopher Wellons, released to public domain:
 #[derive(StructOpt, Debug)]
 struct Options {
     #[structopt(
-        short = "l",
+        short = 'l',
         long = "length",
         default_value = "4",
         help = "The number of words per password"
     )]
     length_of_password: usize,
     #[structopt(
-        short = "n",
+        short = 'n',
         long = "number",
         default_value = "10",
         help = "The number of passwords to generate"
     )]
     number_of_passwords: usize,
     #[structopt(
-        short = "s",
+        short = 's',
         long = "separator",
         default_value = " ",
         help = "The separator between words in a password"
@@ -88,29 +87,33 @@ struct Options {
     word_separator: String,
 }
 
+#[test]
+fn verify_options() {
+    use clap::IntoApp;
+    Options::into_app().debug_assert()
+}
+
 fn main() {
     let long_version = format!(
         "{}\n
 {}",
-        crate_version!(),
+        env!("CARGO_PKG_VERSION"),
         LICENSE
     );
-    let matches = Options::clap()
+    let matches = Options::into_app()
         .after_help(
             "\
 xkpwgen copyright (C) 2017 Sebastian Wiesner <sebastian@swsnr.de>
 wordlists copyright (C) 2017 Christopher Wellons",
         )
         .long_version(long_version.as_str())
-        .version_message("Print version and license information")
-        .help_message("Print this message")
-        .settings(&[
-            AppSettings::DontCollapseArgsInUsage,
-            // Don't put flags and options in separate --help groups
-            AppSettings::UnifiedHelpMessage,
-        ])
+        .mut_arg("version", |a| {
+            a.help("Print version and license information")
+        })
+        .mut_arg("help", |a| a.help("Print this message"))
+        .setting(AppSettings::DontCollapseArgsInUsage)
         .get_matches();
-    let options = Options::from_clap(&matches);
+    let options = Options::from_arg_matches(&matches).unwrap_or_else(|e| e.exit());
 
     let words: Vec<&'static str> = WORDS.lines().collect();
     for _ in 0..options.number_of_passwords {
