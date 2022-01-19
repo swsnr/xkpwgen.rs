@@ -14,7 +14,6 @@ edition = "2021"
 [dependencies]
 rand = "^0.8"
 clap = { version = "3.0.10", features = ["derive"] }
-lazy_static = "^1.4"
 
 [features]
 default = []

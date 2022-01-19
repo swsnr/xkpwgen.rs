@@ -304,6 +304,5 @@ name = "xkpwgen"
 version = "0.8.1"
 dependencies = [
  "clap",
- "lazy_static",
  "rand",
 ]
