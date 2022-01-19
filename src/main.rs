@@ -103,7 +103,7 @@ fn main() {
     let matches = Options::into_app()
         .after_help(
             "\
-xkpwgen copyright (C) 2017 Sebastian Wiesner <sebastian@swsnr.de>
+xkpwgen copyright (C) 2017-2022 Sebastian Wiesner <sebastian@swsnr.de>
 wordlists copyright (C) 2017 Christopher Wellons",
         )
         .long_version(long_version.as_str())
