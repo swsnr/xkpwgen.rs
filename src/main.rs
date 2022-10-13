@@ -15,11 +15,10 @@
 //! Generate XKCD 936 passwords.
 //!
 //! ![](http://imgs.xkcd.com/comics/password_strength.png)
-//!
 
 #![deny(warnings, clippy::all)]
 
-use clap::{AppSettings, FromArgMatches, IntoApp, StructOpt};
+use clap::Parser;
 use rand::seq::IteratorRandom;
 use rand::{thread_rng, Rng};
 
@@ -54,74 +53,42 @@ where
         .join(separator)
 }
 
-static LICENSE: &str = "\
+fn long_version() -> &'static str {
+    concat!(
+        env!("CARGO_PKG_VERSION"),
+        "\n",
+        "\
 xkpwgen license Apache License, Version 2.0: <http://www.apache.org/licenses/LICENSE-2.0>
 There is NO WARRANTY, to the extent permitted by law.
 
 wordlist by Christopher Wellons, released to public domain:
-<https://github.com/skeeto/pokerware/tree/89a8fec541fdbe04fe15b5ad0d7986019240f741>
-";
-
-#[derive(StructOpt, Debug)]
-struct Options {
-    #[structopt(
-        short = 'l',
-        long = "length",
-        default_value = "4",
-        help = "The number of words per password"
-    )]
-    length_of_password: usize,
-    #[structopt(
-        short = 'n',
-        long = "number",
-        default_value = "10",
-        help = "The number of passwords to generate"
-    )]
-    number_of_passwords: usize,
-    #[structopt(
-        short = 's',
-        long = "separator",
-        default_value = " ",
-        help = "The separator between words in a password"
-    )]
-    word_separator: String,
+<https://github.com/skeeto/pokerware/tree/89a8fec541fdbe04fe15b5ad0d7986019240f741>"
+    )
 }
 
-#[test]
-fn verify_options() {
-    use clap::IntoApp;
-    Options::into_app().debug_assert()
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_version = long_version())]
+struct Options {
+    /// Number of words per password
+    #[arg(short, long, default_value_t = 4)]
+    length: usize,
+    #[arg(short, long, default_value_t = 10)]
+    /// Number of passwords to generate
+    number: usize,
+    /// separator between words in a password
+    #[arg(short, long, default_value = " ")]
+    separator: String,
 }
 
 fn main() {
-    let long_version = format!(
-        "{}\n
-{}",
-        env!("CARGO_PKG_VERSION"),
-        LICENSE
-    );
-    let matches = Options::into_app()
-        .after_help(
-            "\
-xkpwgen copyright (C) 2017-2022 Sebastian Wiesner <sebastian@swsnr.de>
-wordlists copyright (C) 2017 Christopher Wellons",
-        )
-        .long_version(long_version.as_str())
-        .mut_arg("version", |a| {
-            a.help("Print version and license information")
-        })
-        .mut_arg("help", |a| a.help("Print this message"))
-        .setting(AppSettings::DontCollapseArgsInUsage)
-        .get_matches();
-    let options = Options::from_arg_matches(&matches).unwrap_or_else(|e| e.exit());
-
+    let options = Options::parse();
     let words: Vec<&'static str> = WORDS.lines().collect();
-    for _ in 0..options.number_of_passwords {
+    for _ in 0..options.number {
         let password = generate_password(
             &mut thread_rng(),
             &words,
-            options.length_of_password,
-            &options.word_separator,
+            options.length,
+            &options.separator,
         );
         println!("{}", password);
     }
