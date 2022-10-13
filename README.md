@@ -55,6 +55,6 @@ domain][pd].
 
 ----
 
-xkpwgen copyright (C) 2017–2019 Sebastian Wiesner
+xkpwgen copyright (C) 2017–2022 Sebastian Wiesner
 
 xkpwgen is licensed under [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
