@@ -2,4 +2,3 @@ pre-release-commit-message = "Release {{version}}"
 tag-prefix = ""
 tag-name = "{{version}}"
 tag-message = "Version {{tag_name}}"
-pre-release-hook = ["./scripts/check"]
